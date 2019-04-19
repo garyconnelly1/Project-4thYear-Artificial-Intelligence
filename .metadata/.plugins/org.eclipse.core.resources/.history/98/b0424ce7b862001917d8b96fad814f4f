@@ -1,0 +1,67 @@
+package ie.gmit.sw.ai.observers;
+
+import java.awt.event.KeyEvent;
+
+import ie.gmit.sw.ai.ControlledSprite;
+import ie.gmit.sw.ai.GameSetup;
+import ie.gmit.sw.ai.GameView;
+import ie.gmit.sw.ai.observables.KeyPressed;
+
+public class PlayerObserver implements KeyObserver{
+	
+	private GameView gamePanel;
+	private GameSetup setup;
+	private ControlledSprite player;
+
+	
+	
+	
+	public PlayerObserver(GameView gamePanel, GameSetup setup, ControlledSprite player) {
+		
+		System.out.println("Here.");
+		
+		setGamePanel(gamePanel);
+		setSetup(setup);
+		setPlayer(player);
+		KeyPressed keyPressed = KeyPressed.getInstance(); // Because we want to get a handle on the same KeyPressed listener from multiple classes.
+		keyPressed.AddObserver(this);
+		
+	}
+	
+	@Override
+	public void update(KeyEvent e) {
+		System.out .println("KeyPressed!");
+		
+	}
+	
+	
+	
+	
+	
+	
+	public GameView getGamePanel() {
+		return gamePanel;
+	}
+
+	public void setGamePanel(GameView gamePanel) {
+		this.gamePanel = gamePanel;
+	}
+
+	public GameSetup getSetup() {
+		return setup;
+	}
+
+	public void setSetup(GameSetup setup) {
+		this.setup = setup;
+	}
+
+	public ControlledSprite getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(ControlledSprite player) {
+		this.player = player;
+	}
+
+
+}

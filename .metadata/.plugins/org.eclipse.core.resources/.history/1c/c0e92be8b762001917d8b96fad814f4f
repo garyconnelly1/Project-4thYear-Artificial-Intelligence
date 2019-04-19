@@ -1,0 +1,55 @@
+package ie.gmit.sw.ai.observers;
+
+import java.awt.event.KeyEvent;
+
+import ie.gmit.sw.ai.ControlledSprite;
+import ie.gmit.sw.ai.GameSetup;
+import ie.gmit.sw.ai.GameView;
+
+public class PlayerObserver implements KeyObserver{
+	
+	private GameView gamePanel;
+	private GameSetup setup;
+	private ControlledSprite player;
+
+	
+	@Override
+	public void update(KeyEvent keyEvent) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public PlayerObserver(GameView gamePanel, GameSetup setup, ControlledSprite player) {
+		
+		setGamePanel(gamePanel);
+		setSetup(setup);
+		setPlayer(player);
+		
+	}
+	
+	public GameView getGamePanel() {
+		return gamePanel;
+	}
+
+	public void setGamePanel(GameView gamePanel) {
+		this.gamePanel = gamePanel;
+	}
+
+	public GameSetup getSetup() {
+		return setup;
+	}
+
+	public void setSetup(GameSetup setup) {
+		this.setup = setup;
+	}
+
+	public ControlledSprite getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(ControlledSprite player) {
+		this.player = player;
+	}
+
+
+}

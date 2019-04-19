@@ -15,7 +15,7 @@ public class Maze {
 		buildMaze();
 
 		//setGoalNode();
-		placeGoal('G', '0');
+		placeGoal();
 		//unvisit();
 		
 		
@@ -90,7 +90,7 @@ public class Maze {
 	
 	
 	
-	
+	/*
 	private void placeGoal(char feature, char replace) { // Change this to make is far away from the player.
 		System.out.println("Place goal.");
 		
@@ -110,6 +110,57 @@ public class Maze {
 		//	}
 		
 }
+
+*/
+	
+	public void placeGoal() {
+
+        Random random = new Random();
+        int randRow = 0;
+        int randCol = 0;
+        boolean goalSet = false;
+
+        while(goalSet != true){
+
+            this.setGoalPos(random.nextInt((2 - 0) + 1) + 0);
+
+            switch(this.getGoalPos()){
+                case 0:
+                    // Creates the nodes on the bottom side of the maze
+                    randRow = random.nextInt(((maze.length - 15) - (maze.length - 16)) + 1) + (maze.length - 16);
+                    randCol = random.nextInt(((maze[0].length - 3) - 1) + 1) + 1;
+                    break;
+                case 1:
+                    // Creates the nodes on the right side of the maze
+                    randRow = random.nextInt(((maze.length - 15) - 1) + 1) + 1;
+                    randCol = random.nextInt(((maze[0].length - 3) - (maze[0].length - 4)) + 1) + (maze[0].length - 4);
+                    break;
+                case 2:
+                    // Creates the nodes on the top side of the maze
+                    randRow = random.nextInt((2 - 1) + 1) + 1;
+                    randCol = random.nextInt(((maze[0].length - 3) - 1) + 1) + 1;
+                    break;
+                default:
+                    randRow = random.nextInt(((maze.length - 15) - 1) + 1) + 1;
+                    randCol = random.nextInt(((maze[0].length - 3) - (maze[0].length - 4)) + 1) + (maze[0].length - 4);
+                    break;
+            }
+
+            try {
+                if(maze[randRow][randCol].isWalkable()){
+                    maze[randRow][randCol].setGoalNode(true);
+                    maze[randRow][randCol].setNodeType('G');
+                    maze[randRow][randCol].setWalkable(true);
+                    goal = maze[randRow][randCol];
+                    goalSet = true;
+                }
+            } catch (Exception e) {
+            }
+        }
+}
+	
+	
+	
 	
 	
 	protected void unvisit() {
