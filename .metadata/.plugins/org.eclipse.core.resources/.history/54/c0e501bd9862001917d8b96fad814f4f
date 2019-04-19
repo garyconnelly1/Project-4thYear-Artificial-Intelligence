@@ -1,0 +1,115 @@
+package ie.gmit.sw.ai;
+
+import ie.gmit.sw.ai.nn.Neural;
+
+public class SpiderController {
+	
+	private static boolean isValidMove(Spider thread, int row, int col) {
+		
+		  if(thread.getPlayer().isGameOver()) return false;
+	        if((row < 0) || (col < 0) || !(row <= thread.getMaze().length - 1 && col <= thread.getMaze()[row].length - 1)) return false;
+
+	        switch(thread.getMaze()[row][col].getNodeType()){
+	            case ' ':
+	            	thread.getMaze()[thread.getRowPos()][thread.getColPos()].setNodeType(' '); // Paint the road where the spider was.
+	            	thread.getMaze()[row][col].setNodeType('S');
+	                if(thread.isAstar())
+	                	thread.getMaze()[row][col].setNodeType('A');
+	                thread.getMaze()[row][col].setEnemyID(thread.getMaze()[thread.getRowPos()][thread.getColPos()].getEnemyID());
+	                thread.getMaze()[thread.getRowPos()][thread.getColPos()].setEnemyID(0);
+	                return true;
+	            case 'P': 
+	            	if(thread.isAstar()) {
+	            		
+	            		return fight(thread, row,col);
+	            	
+	            	}else {
+	            		
+	            		return classify(thread, row, col);
+	    		
+	            	}
+	                
+	                
+	        	case 'Q':
+	                thread.getMaze()[thread.getRowPos()][thread.getColPos()].setNodeType(' ');
+	                if(thread.isAstar())
+	                	thread.getMaze()[row][col].setNodeType('A');
+	                thread.getMaze()[row][col].setEnemyID(thread.getMaze()[thread.getRowPos()][thread.getColPos()].getEnemyID());
+	                thread.getMaze()[thread.getRowPos()][thread.getColPos()].setEnemyID(0);
+	                return true;
+	            default:
+	                return false;
+	        }
+		//return false;
+	}
+	
+	
+	
+	
+	 public static boolean fight(Spider thread, int row, int col) {
+     	FuzzyFight fuzzyFight = new FuzzyFight();
+         boolean enemyWon = fuzzyFight.startBattle(thread.getPlayer(), thread, "fcl/fuzzyFight.fcl");
+         if(enemyWon == true){
+             // The player has lost the game!
+             thread.getMaze()[thread.getRowPos()][thread.getColPos()].setNodeType(' ');
+             thread.getMaze()[thread.getRowPos()][thread.getColPos()].setEnemyID(0);
+             thread.getPlayer().setGameOver(true);
+             thread.getMaze()[row][col].setNodeType('L');
+             
+         }else{
+             thread.getMaze()[thread.getRowPos()][thread.getColPos()].setNodeType('D');
+             if(thread.isAstar())
+                 thread.getMaze()[thread.getRowPos()][thread.getColPos()].setNodeType('D');
+             thread.getMaze()[thread.getRowPos()][thread.getColPos()].setEnemyID(0);
+             thread.setHealth(0);
+             
+         }
+         return enemyWon;
+	    }
+	 
+	 
+	 
+	 public static boolean classify(Spider thread, int row, int col) {
+	    	
+	    	
+	    	System.out.println("Neural.");
+ 		
+ 		int outcome = 5; // Default it to run.
+ 		
+ 		try {
+				 outcome = Neural.process(thread.getPlayer().getHealth(), thread.getPlayer().getWeaponStrength(),
+						thread.getPlayer().getDefence());
+			} catch (Exception e) {
+				System.out.println("Error processing player data.");
+				e.printStackTrace();
+			}
+ 		
+ 		switch(outcome) {
+ 		case 1: // The spider freezes on the spot.
+ 			System.out.println("Panic!");
+ 			try {
+					Thread.sleep(10000); // Freeze the thread from moving for 10 seconds.
+					return false;
+				} catch (InterruptedException e) {
+					System.out.println("Thread error.");
+					e.printStackTrace();
+				}
+ 			break;
+ 		case 2: // Attack the player.
+ 			System.out.println("Fight!");
+ 			return fight(thread, row,col);
+ 		case 3: // Teleport away from the player.
+ 			System.out.println("Hide!");
+ 			hide();
+ 			return false;
+ 		case 4:
+ 			System.out.println("Run!");
+ 			return false;
+ 			default: // The default is to run away.
+ 				System.out.println("Run.");
+ 				return false;
+ 		}
+	    	return false;
+	    }
+
+}

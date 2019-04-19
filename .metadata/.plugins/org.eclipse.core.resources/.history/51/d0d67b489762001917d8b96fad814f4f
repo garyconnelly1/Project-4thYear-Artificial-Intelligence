@@ -1,0 +1,44 @@
+package ie.gmit.sw.ai;
+
+public class SpiderController {
+	
+	private static boolean isValidMove(Spider thread, int row, int col) {
+		
+		  if(thread.getPlayer().isGameOver()) return false;
+	        if((row < 0) || (col < 0) || !(row <= thread.getMaze().length - 1 && col <= thread.getMaze()[row].length - 1)) return false;
+
+	        switch(maze[row][col].getNodeType()){
+	            case ' ':
+	                maze[getRowPos()][getColPos()].setNodeType(' '); // Paint the road where the spider was.
+	                maze[row][col].setNodeType('S');
+	                if(this.isAstar())
+	                	maze[row][col].setNodeType('A');
+	                maze[row][col].setEnemyID(maze[getRowPos()][getColPos()].getEnemyID());
+	                maze[getRowPos()][getColPos()].setEnemyID(0);
+	                return true;
+	            case 'P': 
+	            	if(aStar) {
+	            		
+	            		return fight(row,col);
+	            	
+	            	}else {
+	            		
+	            		return classify(row, col);
+	    		
+	            	}
+	                
+	                
+	        	case 'Q':
+	                getMaze()[getRowPos()][getColPos()].setNodeType(' ');
+	                if(this.isAstar())
+	                	getMaze()[row][col].setNodeType('A');
+	                getMaze()[row][col].setEnemyID(getMaze()[getRowPos()][getColPos()].getEnemyID());
+	                getMaze()[getRowPos()][getColPos()].setEnemyID(0);
+	                return true;
+	            default:
+	                return false;
+	        }
+		//return false;
+	}
+
+}

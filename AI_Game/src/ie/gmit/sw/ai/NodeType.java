@@ -1,0 +1,11 @@
+package ie.gmit.sw.ai;
+
+public enum NodeType {
+	
+	HEDGE, SWORD, HELP,
+	BOMB, H_BOMB, SPIDER,
+	ASTARSPIDER, DEADSPIDER, HELPSPIDER, 
+	HEALTH, ARMOR, PLAYER, GOAL,
+	END, LOSE, PLAYER1, BOMB2, ROAD
+
+}

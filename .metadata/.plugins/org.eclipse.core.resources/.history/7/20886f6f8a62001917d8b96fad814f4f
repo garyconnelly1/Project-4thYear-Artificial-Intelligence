@@ -1,0 +1,321 @@
+package ie.gmit.sw.ai;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import ie.gmit.sw.ai.Traversers.AStarTraversator;
+
+public class GameStats {
+	
+	// Left panel elements
+		private static JLabel lblCurScore;
+		private static JLabel lblCurStepstoExit;
+		private static JLabel lblCurSteps;
+		private static JLabel lblHealthPoints;
+		private static JLabel lblArmorPoints;
+		private static JLabel lblCurWeapon;
+		private static JLabel lblCurWeaponStr;
+		private static JLabel lblCurSpecial;
+		private static JLabel lblEnemiesAmount;
+		private static JLabel lblCommonAmount;
+		private static JLabel lblBossesAmount;
+		private static JLabel lblCurDifficulty;
+
+		// Right panel elements
+		private static JLabel lblCurExits;
+		private JComboBox<String> gameDifficulty1;
+		private static JComboBox<String> gameDifficulty2;
+		
+		
+		/**
+		 * Setup of the left panel in the game window frame that contains labels and information for the player
+		 */
+		
+		/*
+		public static void setupLeftPanel(JPanel leftPanel, JFrame gameFrame){
+			System.out.println("Setup left.");
+			leftPanel = new JPanel();
+			leftPanel.setBackground(Color.red);
+			leftPanel.setBounds(0, 0, 205, 751);
+			gameFrame.getContentPane().add(leftPanel);
+			leftPanel.setLayout(null);
+
+			JLabel lblPlayer = new JLabel("Stats");
+			lblPlayer.setBounds(10, 10, 170, 24);
+			lblPlayer.setForeground(Color.white);
+			lblPlayer.setFont(new Font("Arial", Font.BOLD, 24));
+			leftPanel.add(lblPlayer);
+
+			JLabel lblScore = new JLabel("Score: ");
+			lblScore.setBounds(10, 50, 60, 24);
+			lblScore.setForeground(Color.white);
+			lblScore.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblScore);
+
+			lblCurScore = new JLabel("0");
+			lblCurScore.setBounds(70, 50, 80, 24);
+			lblCurScore.setForeground(Color.white);
+			lblCurScore.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblCurScore);
+
+			JLabel lblStepstoExit = new JLabel();
+			lblStepstoExit.setBounds(10, 90, 115, 24);
+			lblStepstoExit.setForeground(Color.white);
+			lblStepstoExit.setFont(new Font("Arial", Font.BOLD, 18));
+			//leftPanel.add(lblStepstoExit);
+
+			lblCurStepstoExit = new JLabel("");
+			lblCurStepstoExit.setBounds(125, 90, 60, 24);
+			lblCurStepstoExit.setForeground(Color.green);
+			lblCurStepstoExit.setFont(new Font("Arial", Font.BOLD, 18));
+			//leftPanel.add(lblCurStepstoExit);
+
+			JLabel lblSteps = new JLabel();
+			lblSteps.setBounds(10, 130, 60, 24);
+			lblSteps.setForeground(Color.white);
+			lblSteps.setFont(new Font("Arial", Font.BOLD, 18));
+			//leftPanel.add(lblSteps);
+
+			lblCurSteps = new JLabel();
+			lblCurSteps.setBounds(70, 130, 80, 24);
+			lblCurSteps.setForeground(Color.white);
+			lblCurSteps.setFont(new Font("Arial", Font.BOLD, 18));
+			//leftPanel.add(lblCurSteps);
+
+			JLabel lblHealth = new JLabel("Health: ");
+			lblHealth.setBounds(10, 90, 115, 24);
+			lblHealth.setForeground(Color.white);
+			lblHealth.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblHealth);
+
+			lblHealthPoints = new JLabel("100");
+			lblHealthPoints.setBounds(70, 90, 60, 24);
+			lblHealthPoints.setForeground(Color.white);
+			lblHealthPoints.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblHealthPoints);
+
+			JLabel lblArmor = new JLabel("Armor: ");
+			lblArmor.setBounds(10, 130, 60, 24);
+			lblArmor.setForeground(Color.white);
+			lblArmor.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblArmor);
+
+			lblArmorPoints = new JLabel("100");
+			lblArmorPoints.setBounds(70, 130, 80, 24);
+			lblArmorPoints.setForeground(Color.white);
+			lblArmorPoints.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblArmorPoints);
+
+			JLabel lblWeapon = new JLabel("Weapon: ");
+			lblWeapon.setBounds(10, 170, 65, 24);
+			lblWeapon.setForeground(Color.white);
+			lblWeapon.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblWeapon);
+
+			lblCurWeapon = new JLabel("Unarmed");
+			lblCurWeapon.setBounds(75, 170, 80, 24);
+			lblCurWeapon.setForeground(Color.white);
+			lblCurWeapon.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblCurWeapon);
+
+			JLabel lblWeaponStr = new JLabel("");
+			lblWeaponStr.setBounds(10, 290, 140, 24);
+			lblWeaponStr.setForeground(Color.white);
+			lblWeaponStr.setFont(new Font("Arial", Font.BOLD, 18));
+			//leftPanel.add(lblWeaponStr);
+
+			lblCurWeaponStr = new JLabel("");
+			lblCurWeaponStr.setBounds(160, 290, 40, 24);
+			lblCurWeaponStr.setForeground(Color.white);
+			lblCurWeaponStr.setFont(new Font("Arial", Font.BOLD, 18));
+			//leftPanel.add(lblCurWeaponStr);
+
+			JLabel lblSpecial = new JLabel("");
+			lblSpecial.setBounds(10, 330, 130, 24);
+			lblSpecial.setForeground(Color.white);
+			lblSpecial.setFont(new Font("Arial", Font.BOLD, 18));
+			//leftPanel.add(lblSpecial);
+
+			lblCurSpecial = new JLabel("");
+			lblCurSpecial.setBounds(148, 330, 90, 24);
+			lblCurSpecial.setForeground(Color.white);
+			lblCurSpecial.setFont(new Font("Arial", Font.BOLD, 18));
+			//leftPanel.add(lblCurSpecial);
+
+			JLabel lblEnemy = new JLabel("Spider Type");
+			lblEnemy.setBounds(10, 370, 170, 24);
+			lblEnemy.setForeground(Color.white);
+			lblEnemy.setFont(new Font("Arial", Font.BOLD, 24));
+			leftPanel.add(lblEnemy);
+
+			JLabel lblEnemies = new JLabel("Normal Red");
+			lblEnemies.setBounds(10, 415, 100, 24);
+			lblEnemies.setForeground(Color.white);
+			lblEnemies.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblEnemies);
+
+			lblEnemiesAmount = new JLabel("20");
+			lblEnemiesAmount.setBounds(105, 415, 80, 24);
+			lblEnemiesAmount.setForeground(Color.white);
+			lblEnemiesAmount.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblEnemiesAmount);
+
+			JLabel lblCommon = new JLabel("Total:");
+			lblCommon.setBounds(10, 455, 90, 24);
+			lblCommon.setForeground(Color.white);
+			lblCommon.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblCommon);
+
+			lblCommonAmount = new JLabel("15");
+			lblCommonAmount.setBounds(70, 455, 80, 24);
+			lblCommonAmount.setForeground(Color.white);
+			lblCommonAmount.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblCommonAmount);
+
+			JLabel lblBosses = new JLabel("Hunting:");
+			lblBosses.setBounds(10, 495, 70, 24);
+			lblBosses.setForeground(Color.white);
+			lblBosses.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblBosses);
+
+			lblBossesAmount = new JLabel("5");
+			lblBossesAmount.setBounds(70, 495, 80, 24);
+			lblBossesAmount.setForeground(Color.white);
+			lblBossesAmount.setFont(new Font("Arial", Font.BOLD, 14));
+			leftPanel.add(lblBossesAmount);
+		}
+
+		/**
+		 * Setup of the right panel in the game window frame that contains labels and information for the player
+		 */
+		
+		/*
+		public static void setupRightPanel(JPanel rightPanel, JFrame gameFrame){
+			
+			System.out.println("Setup right.");
+
+			rightPanel = new JPanel();
+			rightPanel.setBackground(Color.red);
+			rightPanel.setBounds(1000, 0, 194, 751);
+			gameFrame.getContentPane().add(rightPanel);
+			rightPanel.setLayout(null);
+
+			JLabel lblGame = new JLabel("Game Stats");
+			lblGame.setBounds(15, 10, 170, 24);
+			lblGame.setForeground(Color.white);
+			lblGame.setFont(new Font("Arial", Font.BOLD, 24));
+			rightPanel.add(lblGame);
+
+			JLabel lblExits = new JLabel("Maze Exits:");
+			lblExits.setBounds(15, 50, 110, 24);
+			lblExits.setForeground(Color.white);
+			lblExits.setFont(new Font("Arial", Font.BOLD, 14));
+			rightPanel.add(lblExits);
+
+			lblCurExits = new JLabel("0");
+			lblCurExits.setBounds(120, 50, 80, 24);
+			lblCurExits.setForeground(Color.white);
+			lblCurExits.setFont(new Font("Arial", Font.BOLD, 14));
+			rightPanel.add(lblCurExits);
+
+			/*
+			JLabel lblDifficulty = new JLabel("Difficulty:");
+			lblDifficulty.setBounds(15, 90, 90, 24);
+			lblDifficulty.setForeground(Color.white);
+			lblDifficulty.setFont(new Font("Arial", Font.BOLD, 14));
+			rightPanel.add(lblDifficulty);
+
+			lblCurDifficulty = new JLabel("Normal");
+			lblCurDifficulty.setBounds(105, 90, 90, 24);
+			lblCurDifficulty.setForeground(Color.white);
+			lblCurDifficulty.setFont(new Font("Arial", Font.BOLD, 14));
+			rightPanel.add(lblCurDifficulty);
+
+			JLabel lblMenu = new JLabel("Menu");
+			lblMenu.setBounds(15, 505, 170, 24);
+			lblMenu.setForeground(Color.white);
+			lblMenu.setFont(new Font("Arial", Font.BOLD, 24));
+			rightPanel.add(lblMenu);
+
+			JButton btnNewGame = new JButton("New Game");
+			btnNewGame.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					initNewGame(gameDifficulty2.getSelectedItem().toString());
+				}
+			});
+			btnNewGame.setBounds(15, 551, 165, 23);
+			btnNewGame.setFocusable(false);
+			rightPanel.add(btnNewGame);
+
+			JLabel label = new JLabel("Difficulty:");
+			label.setForeground(Color.WHITE);
+			label.setFont(new Font("Arial", Font.BOLD, 18));
+			label.setBounds(15, 592, 90, 24);
+			rightPanel.add(label);
+
+			gameDifficulty2 = new JComboBox<String>();
+			gameDifficulty2.setBounds(110, 595, 70, 20);
+			gameDifficulty2.addItem("Easy");
+			gameDifficulty2.addItem("Normal");
+			gameDifficulty2.addItem("Hard");
+			gameDifficulty2.setFocusable(false);
+			rightPanel.add(gameDifficulty2);
+			System.out.println("End Setup.");
+			
+	}
+		*/
+		
+		/*
+		public static void updateStatsGUI(GameSetup game) {
+			// Updating the GUI elements
+			/*
+			lblCurScore.setText(Integer.toString(game.getPlayer().getScore()));
+			lblCurStepstoExit.setText(Integer.toString(calStepsToExit(game)));
+			lblCurSteps.setText(Integer.toString(game.getPlayer().getSteps()));
+			lblHealthPoints.setText(Integer.toString(game.getPlayer().getHealth()));
+			lblArmorPoints.setText(Integer.toString(game.getPlayer().getArmor()));
+			lblCurWeapon.setText(game.getPlayer().getWeapon());
+			lblCurWeaponStr.setText(Integer.toString(game.getPlayer().getWeaponStrength()));
+			*/
+			//lblCurSpecial.setText(Integer.toString(game.getPlayer().getSpecial()));
+/*
+			int commonCount = 0;
+			int bossCount = 0;
+
+			for (int i = 0; i < game.getEnemies().size(); i++) {
+				if (game.getEnemies().get(i).isAstar()) {
+					if (game.getEnemies().get(i).getHealth() > 0)
+						bossCount++;
+				} else {
+					if (game.getEnemies().get(i).getHealth() > 0)
+						commonCount++;
+				}
+			}
+
+			//lblEnemiesAmount.setText(Integer.toString(bossCount + commonCount));
+			//lblCommonAmount.setText(Integer.toString(commonCount));
+			//lblBossesAmount.setText(Integer.toString(bossCount));
+			//lblCurExits.setText("");
+			//lblCurDifficulty.setText("");
+			//lblCurDifficulty.setText("null");
+			//System.out.println(".");
+		}// End update Stats
+	*/
+		/*
+		public static int calStepsToExit(GameSetup game) { /// Important
+			// Calculating the step to the goal node
+			AStarTraversator traverse = new AStarTraversator(game.getModel().getGoalNode(), true);
+			traverse.traverse(game.getMaze(), game.getMaze()[game.getPlayer().getRowPos()][game.getPlayer().getColPos()]);
+			game.getPlayer().setStepsToExit(traverse.getStepsToExit());
+			return game.getPlayer().getStepsToExit();
+		}
+*/
+}
