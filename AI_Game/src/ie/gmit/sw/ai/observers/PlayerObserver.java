@@ -34,9 +34,6 @@ public class PlayerObserver implements KeyObserver{
 	
 	@Override
 	public void update(KeyEvent e) {
-		System.out .println("KeyPressed!");
-		
-		
 		this.player = setup.getPlayer();
 
 		if (setup.getPlayer() == null || setup.getPlayer().isGameOver())

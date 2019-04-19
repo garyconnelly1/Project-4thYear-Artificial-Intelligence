@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="ie.gmit.sw.ai.observers.KeyObserver"/>
+<fullyQualifiedTypeName name="ie.gmit.sw.ai.ControlledSprite"/>
+<fullyQualifiedTypeName name="ie.gmit.sw.ai.observables.KeyPressed"/>
+<fullyQualifiedTypeName name="ie.gmit.sw.ai.Direction"/>
+<fullyQualifiedTypeName name="ie.gmit.sw.ai.Traversers.Traversator"/>
+</qualifiedTypeNameHistroy>

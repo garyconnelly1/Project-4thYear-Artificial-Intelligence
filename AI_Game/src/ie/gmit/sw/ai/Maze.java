@@ -162,7 +162,6 @@ public class Maze {
 	
 	
 	
-	
 	protected void unvisit() {
 		for (int i = 0; i < maze.length; i++) {
 			for (int j = 0; j < maze[i].length; j++) {

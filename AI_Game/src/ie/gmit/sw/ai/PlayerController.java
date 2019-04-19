@@ -1,7 +1,6 @@
 package ie.gmit.sw.ai;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+
 
 import ie.gmit.sw.ai.Traversers.AStarTraversator;
 import ie.gmit.sw.ai.Traversers.BasicHillClimbingTraversator;
