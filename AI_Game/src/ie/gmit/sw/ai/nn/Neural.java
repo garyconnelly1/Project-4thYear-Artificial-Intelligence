@@ -82,9 +82,11 @@ public class Neural {
 
 	public static void main(String[] args) throws Exception {
 		trainNetwork();
-		Scanner scanner = new Scanner(System.in);
+		//Scanner scanner = new Scanner(System.in);
 		
-			
+			//	double[][] data = Utils.normalize(newData, 0, 2);
+				
+				
 				process(80,80,80);
 			
 		
@@ -148,7 +150,7 @@ public class Neural {
 		System.out.println("==>" + (Utils.getMaxIndex(result) + 1));
 		
 		int classification = (Utils.getMaxIndex(result) + 1);
-		/*
+		
 		switch(classification) {
 		case 1:
 			System.out.println("Panic.");
@@ -163,7 +165,7 @@ public class Neural {
 			default:
 				System.out.println("Err.");
 		}
-		*/
+		
 		
 		return classification;
 		

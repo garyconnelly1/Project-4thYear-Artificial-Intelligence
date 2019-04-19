@@ -102,17 +102,17 @@ public class SpiderController {
 				}
  			break;
  		case 2: // Attack the player.
- 			System.out.println("Fight!");
+ 			//System.out.println("Fight!");
  			return fight(thread, row,col);
  		case 3: // Teleport away from the player.
- 			System.out.println("Hide!");
+ 			//System.out.println("Hide!");
  			hide(thread);
  			return false;
  		case 4:
- 			System.out.println("Run!");
+ 			//System.out.println("Run!");
  			return false;
  			default: // The default is to run away.
- 				System.out.println("Run.");
+ 				//System.out.println("Run.");
  				return false;
  		}
 	    	return false;

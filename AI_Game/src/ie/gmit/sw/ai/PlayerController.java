@@ -7,6 +7,7 @@ import ie.gmit.sw.ai.Traversers.BasicHillClimbingTraversator;
 import ie.gmit.sw.ai.Traversers.BeamTraversator;
 import ie.gmit.sw.ai.Traversers.BestFirstTraversator;
 import ie.gmit.sw.ai.Traversers.DepthLimitedDFSTraversator;
+import ie.gmit.sw.ai.Traversers.IDAStarTraversator;
 import ie.gmit.sw.ai.Traversers.Traversator;
 
 public class PlayerController{
@@ -178,7 +179,7 @@ public class PlayerController{
 			// return new DepthLimitedDFSTraversator(game.getMaze().length);
 			return new DepthLimitedDFSTraversator(5); // Only works sometimes.
 		case 6:
-			// return new IDAStarTraversator(game.getModel().getGoalNode());
+			 return new IDAStarTraversator(setup.getModel().getGoalNode());
 		case 7:
 			// return new IDDFSTraversator();
 		default:

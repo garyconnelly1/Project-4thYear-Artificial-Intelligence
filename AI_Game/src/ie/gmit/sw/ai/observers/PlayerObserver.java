@@ -81,12 +81,13 @@ public class PlayerObserver implements KeyObserver{
 				return;
 			// Creates a new search algorithm object to find the goal node, randomly
 			// Traversator traverse = randomSearch(new Random().nextInt((3 - 0) + 1) + 0);
-			// Traversator traverse = algorithm(3); // Try to make it do BestFirstSearch.
-			// Traversator traverse = algorithm(4); // Try to make it do HillCliming.
-			// Traversator traverse = algorithm(1); // Try to make it do Beam.
+			 //Traversator traverse = PlayerController.algorithm(setup, 3); // Try to make it do BestFirstSearch.
+			// Traversator traverse = PlayerController.algorithm(setup, 4); // Try to make it do HillCliming.
+			// Traversator traverse = PlayerController.algorithm(setup, 1); // Try to make it do Beam.
 			// Traversator traverse = algorithm(2); // Try to make it do SimulatedAnnealing.
-			// Traversator traverse = algorithm(5); // Try to make it do DLDFS.
-			Traversator traverse = PlayerController.algorithm(setup, 0); // Try to make it do A*.
+			// Traversator traverse = PlayerController.algorithm(setup, 5); // Try to make it do DLDFS.
+			//Traversator traverse = PlayerController.algorithm(setup, 0); // Try to make it do A*.
+			Traversator traverse = PlayerController.algorithm(setup, 6); // Try to make it do IDA*.
 			traverse.traverse(setup.getMaze(),
 					setup.getMaze()[setup.getPlayer().getRowPos()][setup.getPlayer().getColPos()]);
 			setup.getPlayer().setHelp(false);

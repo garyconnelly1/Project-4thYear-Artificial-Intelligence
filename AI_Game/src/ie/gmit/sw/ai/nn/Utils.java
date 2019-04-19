@@ -37,7 +37,7 @@ public class Utils {
 		int maxIndex = -1;
 		for (int i = 0; i < vector.length;i++){
 			
-			System.out.println("Value - " + vector[i]);
+		//	System.out.println("Value - " + vector[i]);
 			if (vector[i] > max){
 				max = vector[i];
 				maxIndex = i;
