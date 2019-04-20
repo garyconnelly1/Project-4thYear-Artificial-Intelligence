@@ -5,19 +5,16 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import ie.gmit.sw.ai.GameSetup;
 import ie.gmit.sw.ai.Node;
 import ie.gmit.sw.ai.sprites.Sprite;
-public class GameView extends JPanel implements ActionListener{
+
+public class GameView extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
-	public static final int DEFAULT_VIEW_SIZE = 800;	
+	public static final int DEFAULT_VIEW_SIZE = 800;
 	private int cellspan;
 	private int cellpadding;
 	private int currentRow;
@@ -28,7 +25,6 @@ public class GameView extends JPanel implements ActionListener{
 	private int enemyState;
 	private int enemyBossState;
 	private Node[][] maze;
-	//private BufferedImage[] images;
 	private Timer timer;
 	private Sprite[] sprites;
 
@@ -49,75 +45,75 @@ public class GameView extends JPanel implements ActionListener{
 		setBackground(Color.LIGHT_GRAY);
 		setDoubleBuffered(true);
 	}
-	
+
 	public void setCurrentRow(int row) {
-		if (row < cellpadding){
+		if (row < cellpadding) {
 			currentRow = cellpadding;
-		}else if (row > (maze.length - 1) - cellpadding){
+		} else if (row > (maze.length - 1) - cellpadding) {
 			currentRow = (maze.length - 1) - cellpadding;
-		}else{
+		} else {
 			currentRow = row;
 		}
 	}
 
 	public void setCurrentCol(int col) {
-		if (col < cellpadding){
+		if (col < cellpadding) {
 			currentCol = cellpadding;
-		}else if (col > (maze.length - 1) - cellpadding){
+		} else if (col > (maze.length - 1) - cellpadding) {
 			currentCol = (maze.length - 1) - cellpadding;
-		}else{
+		} else {
 			currentCol = col;
 		}
 	}
 
 	public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D)g;
-              
-        cellspan = zoomOut ? maze.length : 5;         
-        final int size = DEFAULT_VIEW_SIZE/cellspan;
-        g2.drawRect(0, 0, GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
-        
-        for(int row = 0; row < cellspan; row++) {
-        	for (int col = 0; col < cellspan; col++){  
-        		int x1 = col * size;
-        		int y1 = row * size;
-        		
-        		char ch = '0';
-        		ch = maze[row][col].getNodeType();
-        		if (zoomOut){
-        			
-        			if(ch == 'S'){ // Normal Spider.
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g;
+
+		cellspan = zoomOut ? maze.length : 5;
+		final int size = DEFAULT_VIEW_SIZE / cellspan;
+		g2.drawRect(0, 0, GameView.DEFAULT_VIEW_SIZE, GameView.DEFAULT_VIEW_SIZE);
+
+		for (int row = 0; row < cellspan; row++) {
+			for (int col = 0; col < cellspan; col++) {
+				int x1 = col * size;
+				int y1 = row * size;
+
+				char ch = '0';
+				ch = maze[row][col].getNodeType();
+				if (zoomOut) {
+
+					if (ch == 'S') { // Normal Spider.
 						g2.setColor(Color.RED);
 						g2.fillRect(x1, y1, size, size);
 					}
-					
-        			if(ch == 'A'){ // A* Spider.
+
+					if (ch == 'A') { // A* Spider.
 						g2.setColor(Color.BLACK);
 						g2.fillRect(x1, y1, size, size);
 					}
-					if(ch == 'D'){ // Dead Spider.
+					if (ch == 'D') { // Dead Spider.
 						g2.setColor(Color.BLUE);
 						g2.fillRect(x1, y1, size, size);
 					}
-					if(ch == 'Q'){ // Quickest Path.
-							g2.setColor(Color.YELLOW);
-							g2.fillRect(x1, y1, size, size);
-						}
-					if (row == currentRow && col == currentCol){
+					if (ch == 'Q') { // Quickest Path.
+						g2.setColor(Color.YELLOW);
+						g2.fillRect(x1, y1, size, size);
+					}
+					if (row == currentRow && col == currentCol) {
 						g2.setColor(Color.MAGENTA); // Maybe change this color.
 						g2.fillRect(x1, y1, size, size);
 					}
-        		}else{
-        			ch = maze[currentRow - cellpadding + row][currentCol - cellpadding + col].getNodeType();
-        		}
-        		
-				switch(ch){
-				
+				} else {
+					ch = maze[currentRow - cellpadding + row][currentCol - cellpadding + col].getNodeType();
+				}
+
+				switch (ch) {
+
 				case '0': // Hedge.
 					imageIndex = 0;
 					break;
-				
+
 				case 'K': // Sword(K for knife.)
 					imageIndex = 1;
 					break;
@@ -169,58 +165,55 @@ public class GameView extends JPanel implements ActionListener{
 				default:
 					imageIndex = -1;
 					break;
-			}
-        		
-        		
-        	//	imageIndex -= offset;
-        		if (imageIndex >= 0){	
-        			g2.drawImage(sprites[imageIndex].getNext(), x1, y1, null);	
-        		}else{
-					if(maze[row][col].getNodeType() == ' '){ // Print blank space grey.
+				}
+
+				if (imageIndex >= 0) {
+					g2.drawImage(sprites[imageIndex].getNext(), x1, y1, null);
+				} else {
+					if (maze[row][col].getNodeType() == ' ') { // Print blank space grey.
 						g2.setColor(Color.LIGHT_GRAY);
 						g2.fillRect(x1, y1, size, size);
 					}
-        		}
-        		
-        	
-        		if (maze[row][col].getNodeType() == 'Q'){
+				}
+
+				if (maze[row][col].getNodeType() == 'Q') {
 					g2.setColor(maze[row][col].getColor());
 					g2.fillRect(x1, y1, size, size);
 				}
 
-        		if (maze[row][col].isGoalNode() && maze[row][col].getNodeType() != 'P'){
+				if (maze[row][col].isGoalNode() && maze[row][col].getNodeType() != 'P') {
 					g2.setColor(Color.WHITE);
 					g2.fillRect(x1, y1, size, size);
 				}
-        		
-        	}
-        }
-	}
-	
-	public void toggleZoom(){
-		zoomOut = !zoomOut;		
+
+			}
+		}
 	}
 
-	public void actionPerformed(ActionEvent e) {	
-		
-		if (enemyState < 0 || enemyState == 7){
+	public void toggleZoom() {
+		zoomOut = !zoomOut;
+	}
+
+	public void actionPerformed(ActionEvent e) {
+
+		if (enemyState < 0 || enemyState == 7) {
 			enemyState = 8;
-		}else{
+		} else {
 			enemyState = 7;
 		}
 
-		if (enemyBossState < 0 || enemyBossState == 18){
+		if (enemyBossState < 0 || enemyBossState == 18) {
 			enemyBossState = 19;
-		}else{
+		} else {
 			enemyBossState = 18;
 		}
 
-		if(e.getSource() == timer){
+		if (e.getSource() == timer) {
 			repaint();
 		}
-		
-	} 
-	
+
+	}
+
 	public int getPlayerState() {
 		return playerState;
 	}
@@ -229,5 +222,3 @@ public class GameView extends JPanel implements ActionListener{
 		this.playerState = playerState;
 	}
 }
-
-

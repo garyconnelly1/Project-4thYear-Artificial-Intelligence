@@ -6,15 +6,15 @@ import java.util.ArrayList;
 
 import ie.gmit.sw.ai.observers.KeyObserver;
 
-public class KeyPressed implements KeyListener, KeyObservable{
-	
+public class KeyPressed implements KeyListener, KeyObservable {
+
 	private static KeyPressed instance = null;
-	
+
 	private ArrayList<KeyObserver> objList;
-	
+
 	private KeyPressed() {
 		objList = new ArrayList<KeyObserver>();
-}
+	}
 
 	@Override
 	public void NotifyObservers(KeyEvent keyEvent) {
@@ -22,13 +22,12 @@ public class KeyPressed implements KeyListener, KeyObservable{
 			obs.update(keyEvent);
 		}
 	}
-	
-	
+
 	public void AddObserver(KeyObserver obs) {
 		if (obs != null)
 			objList.add(obs);
 	}
-	
+
 	public void DelObserver(KeyObserver obs) {
 		if (obs != null)
 			objList.remove(obs);
@@ -41,16 +40,12 @@ public class KeyPressed implements KeyListener, KeyObservable{
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
-	
+
 	public static KeyPressed getInstance() {
 		if (instance == null) {
 			instance = new KeyPressed();
@@ -59,6 +54,5 @@ public class KeyPressed implements KeyListener, KeyObservable{
 		return instance;
 
 	}
-
 
 }

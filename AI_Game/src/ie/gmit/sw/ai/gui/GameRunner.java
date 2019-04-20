@@ -19,7 +19,7 @@ import ie.gmit.sw.ai.sprites.ControlledSprite;
 import ie.gmit.sw.ai.sprites.Spider;
 import ie.gmit.sw.ai.sprites.Sprite;
 
-public class GameRunner {//implements KeyListener {
+public class GameRunner {// implements KeyListener {
 	public static final int MAZE_DIMENSION = 100;
 	public static final int IMAGE_COUNT = 20;
 	private ControlledSprite player;
@@ -34,12 +34,11 @@ public class GameRunner {//implements KeyListener {
 	public GameRunner() throws Exception {
 		gameMenu();
 		newFrame();
-		// initNewGame("Hard"); //////////////////////////////////////////
-		initNewGame("Normal"); //////////////////////////////////////////
+		initNewGame();
 		gameFrame.repaint();
 
 	}
-	
+
 	public void gameMenu() {
 		Scanner console = new Scanner(System.in);
 		int exitStrategy = 0;
@@ -58,30 +57,26 @@ public class GameRunner {//implements KeyListener {
 		System.out.println("Press 1 --> Gold.");
 		System.out.println("Press 2 --> Jameson.");
 		goal = console.nextInt();
-		
-		
 		console.close();
-		
-		if(exitStrategy < 1 || exitStrategy > 5) {
+
+		if (exitStrategy < 1 || exitStrategy > 5) {
 			exitStrategy = 0;
-		}else{
-			PlayerController.setExitAlgorithm(exitStrategy -1);
+		} else {
+			PlayerController.setExitAlgorithm(exitStrategy - 1);
 		}
-		
-		if(goal == 2) {
+
+		if (goal == 2) {
 			isGold = false;
-		}else {
+		} else {
 			isGold = true;
 		}
-		
-		
+
 	}
 
 	// Abstract the different parts of building the view.
 	private void newFrame() {
 		gameFrame = new JFrame("GMIT - B.Sc. in Computing (Software Development) - Gary Connelly");
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//gameFrame.addKeyListener(this);
 		gameFrame.addKeyListener(KeyPressed.getInstance());
 		gameFrame.getContentPane().setLayout(null);
 		gameFrame.getContentPane().setBackground(Color.black);
@@ -90,8 +85,7 @@ public class GameRunner {//implements KeyListener {
 		gameFrame.setVisible(true);
 	}
 
-	public void initNewGame(String gameDifficulty) {
-		System.out.println("Start.");
+	public void initNewGame() {
 		if (setup != null)
 			setup.killEnemyThreads();
 
@@ -100,13 +94,13 @@ public class GameRunner {//implements KeyListener {
 
 		setup = new GameSetup();
 
-		newGame(gameDifficulty);
+		newGame();
 
 		gameFrame.repaint();
 
 	}
 
-	private void newGame(String gameDifficulty) {
+	private void newGame() {
 
 		Maze model = new Maze(MAZE_DIMENSION);
 		Node[][] maze = model.getMaze(); // The already build maze.
@@ -121,13 +115,12 @@ public class GameRunner {//implements KeyListener {
 		}
 		ArrayList<Spider> spiders = new ArrayList<Spider>();
 		Dimension d = new Dimension(800, 800);
-		System.out.println("Created Player.");
 		setup.setModel(model);
 		setup.setMaze(maze);
 		setup.setPlayer(player);
 		setup.setEnemies(spiders);
 		setup.placePlayer(model.getGoalPos());
-		setup.placeEnemies(gameDifficulty);
+		setup.placeEnemies();
 		setup.setGold(isGold);
 
 		try {
@@ -145,7 +138,7 @@ public class GameRunner {//implements KeyListener {
 		gameFrame.getContentPane().add(gamePanel);
 
 		updateView();
-		
+
 		new PlayerObserver(gamePanel, setup, setup.getPlayer());
 	}
 
@@ -154,13 +147,11 @@ public class GameRunner {//implements KeyListener {
 		gamePanel.setCurrentCol(setup.getPlayer().getColPos());
 	}
 
-
 	public void keyReleased(KeyEvent e) {
 	} // Ignore
 
 	public void keyTyped(KeyEvent e) {
 	} // Ignore
-
 
 	public static void main(String[] args) throws Exception {
 

@@ -1,31 +1,22 @@
 package ie.gmit.sw.ai.controllers;
 
-
-
 import ie.gmit.sw.ai.GameSetup;
 import ie.gmit.sw.ai.Node;
 import ie.gmit.sw.ai.Traversers.AStarTraversator;
 import ie.gmit.sw.ai.Traversers.BasicHillClimbingTraversator;
 import ie.gmit.sw.ai.Traversers.BeamTraversator;
 import ie.gmit.sw.ai.Traversers.BestFirstTraversator;
-import ie.gmit.sw.ai.Traversers.DepthLimitedDFSTraversator;
 import ie.gmit.sw.ai.Traversers.IDAStarTraversator;
 import ie.gmit.sw.ai.Traversers.Traversator;
 import ie.gmit.sw.ai.fuzzy.FuzzyFight;
 
-public class PlayerController{
-	
-	/*
-	 * isValidMove().
-	 * 
-	 */
-	
+public class PlayerController {
+
 	public static int exitAlgorithm = 0;
-	
-	
+
 	public static boolean isValidMove(GameSetup setup, int r, int c) {
 
-		Node[][] maze;// = new Node[][];
+		Node[][] maze;
 		maze = setup.getMaze();
 		if (!(r <= setup.getMaze().length - 1 && c <= setup.getMaze()[r].length - 1))
 			return false;
@@ -128,9 +119,6 @@ public class PlayerController{
 
 			return fight(maze, setup, r, c);
 
-		// return
-			//return classify(setup.getEnemies().get(setup.getMaze()[r][c].getEnemyID()), maze, r, c);
-
 		case 'A':
 
 			return fight(maze, setup, r, c);
@@ -140,7 +128,7 @@ public class PlayerController{
 
 		}
 	}
-	
+
 	public static boolean fight(Node[][] maze, GameSetup setup, int r, int c) {
 		FuzzyFight fuzzyBattle1 = new FuzzyFight();
 		boolean enemyWon1 = fuzzyBattle1.startBattle(setup.getPlayer(),
@@ -148,25 +136,21 @@ public class PlayerController{
 		if (enemyWon1 == true) {
 			// The player has lost the game!
 			maze[setup.getPlayer().getRowPos()][setup.getPlayer().getColPos()].setNodeType(' ');
-			// game.getMaze()[game.getPlayer().getRowPos()][game.getPlayer().getColPos()].setNodeType(NodeType.ROAD);
 			maze[setup.getPlayer().getRowPos()][setup.getPlayer().getColPos()].setEnemyID(0);
 			setup.getPlayer().setGameOver(true);
 			maze[r][c].setNodeType('L');
-			// game.getMaze()[r][c].setNodeType(NodeType.LOSE);
 
 			return false;
 		} else {
 			setup.getEnemies().get(setup.getMaze()[r][c].getEnemyID()).setHealth(0);
 			maze[r][c].setNodeType('D');
-			// game.getMaze()[r][c].setNodeType(NodeType.DEADSPIDER);
 			maze[r][c].setEnemyID(0);
 
 			return false;
 		}
 
 	}
-	
-	
+
 	public static Traversator algorithm(GameSetup setup) {
 		// Selecting a random algorithm to be created and returned
 		switch (exitAlgorithm) {
@@ -180,26 +164,13 @@ public class PlayerController{
 			return new IDAStarTraversator(setup.getModel().getGoalNode());
 		case 4:
 			return new BasicHillClimbingTraversator(setup.getModel().getGoalNode());
-			//return new BasicHillClimbingTraversator(setup.getModel().getGoalNode());
-		case 5:
-			//return new BasicHillClimbingTraversator(setup.getModel().getGoalNode());
-			// return new DepthLimitedDFSTraversator(game.getMaze().length);
-			
-		case 6:
-			//return new DepthLimitedDFSTraversator(5); // Only works sometimes.
-			// return new SimulatedAnnealingTraversator(game.getModel().getGoalNode());
-			//return new BasicHillClimbingTraversator(setup.getModel().getGoalNode());
-		case 7:
-			// return new IDDFSTraversator();
 		default:
 			return new AStarTraversator(setup.getModel().getGoalNode(), false);
 		}
 	}
-	
+
 	public static void setExitAlgorithm(int algorithm) {
 		exitAlgorithm = algorithm;
-		System.out.println("Algorithm chosen: " + exitAlgorithm);
 	}
-
 
 }

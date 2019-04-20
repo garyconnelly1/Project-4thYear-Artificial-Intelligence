@@ -6,14 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import ie.gmit.sw.ai.nn.activator.Activator;
 
 public class Neural {
-	/*
-	 * "resources/neural/Data.txt" "resources/neural/Expected.txt"
-	 */
 
 	private static final double[][] data = readData("resources/neural/Data.txt");
 
@@ -63,21 +59,14 @@ public class Neural {
 			defence = 2;
 		}
 
-		
-
-		
-
 		double[] vector = { health, strength, defence };
 
-		
 		double[] result = nn.process(vector);
-		
-		 
-		 
+
 		// System.out.println("==>" + (Utils.getMaxIndex(result) + 1));
 
 		int classification = (Utils.getMaxIndex(result) + 1);
-		System.out.println("Classification ---> " + classification);
+		//System.out.println("Classification ---> " + classification);
 
 		switch (classification) {
 		case 1:
@@ -128,13 +117,11 @@ public class Neural {
 		}
 		String[] myLines = lines.toArray(new String[lines.size()]);
 
-		int i = 0;
-		for (String s : myLines) {
+		for (int i = 0; i < myLines.length; i++) {
 			dataTuple = myLines[i].split(",");
 			for (int j = 0; j < dataTuple.length; j++) {
 				data[i][j] = Double.parseDouble(dataTuple[j]);
 			}
-			i++;
 
 		}
 
@@ -169,13 +156,11 @@ public class Neural {
 		}
 		String[] myLines = lines.toArray(new String[lines.size()]);
 
-		int i = 0;
-		for (String s : myLines) {
+		for (int i = 0; i < myLines.length; i++) {
 			dataTuple = myLines[i].split(",");
 			for (int j = 0; j < dataTuple.length; j++) {
 				data[i][j] = Double.parseDouble(dataTuple[j]);
 			}
-			i++;
 
 		}
 

@@ -56,7 +56,8 @@ public class AStarTraversator extends ResetTraversal implements Traversator { //
 
 			// When counting for steps to the goal or displaying path to goal node
 			if (node.isGoalNode() && node.getNodeType() != 'P' && !enemySearch) {
-			//if (node.isGoalNode() && node.getNodeType() != NodeType.PLAYER && !enemySearch) {
+				// if (node.isGoalNode() && node.getNodeType() != NodeType.PLAYER &&
+				// !enemySearch) {
 				time = System.currentTimeMillis() - time; // Stop the clock
 				setStepsToExit(TraversatorStats.printStats(node, time, visitCount, countSteps));
 				setFoundGoal(true);
@@ -65,7 +66,8 @@ public class AStarTraversator extends ResetTraversal implements Traversator { //
 			} else
 
 			if (node.isGoalNode() && node.getNodeType() == 'P' && enemySearch) {
-			//	if (node.isGoalNode() && node.getNodeType() == NodeType.PLAYER && enemySearch) {
+				// if (node.isGoalNode() && node.getNodeType() == NodeType.PLAYER &&
+				// enemySearch) {
 				setFoundGoal(true);
 				setPathGoal(node);
 				break;

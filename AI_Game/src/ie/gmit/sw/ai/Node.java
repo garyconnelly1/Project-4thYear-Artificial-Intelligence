@@ -3,12 +3,15 @@ package ie.gmit.sw.ai;
 import java.awt.Color;
 
 public class Node { // Taken from the maze generation labs.
-	
-	public enum Direction {North, South, East, West};
+
+	public enum Direction {
+		North, South, East, West
+	};
+
 	private Node parent;
 	private Color color;
 	private Direction[] paths = null;
-	public boolean visited =  false;
+	public boolean visited = false;
 	public boolean goal;
 	public boolean walkable;
 	public char nodeType;
@@ -16,36 +19,34 @@ public class Node { // Taken from the maze generation labs.
 	private int col = -1;
 	private int distance;
 	private int enemyID;
-	private NodeType type;
-
-	
 
 	public Node(int row, int col) {
 		this.row = row;
 		this.col = col;
 	}
 
-	
 	public void addPath(Direction direction) {
 		int index = 0;
-		if (paths == null){
+		if (paths == null) {
 			paths = new Direction[index + 1];
-		}else{
+		} else {
 			index = paths.length;
 			Direction[] temp = new Direction[index + 1];
-			for (int i = 0; i < paths.length; i++) temp[i] = paths[i];
+			for (int i = 0; i < paths.length; i++)
+				temp[i] = paths[i];
 			paths = temp;
 		}
 
 		paths[index] = direction;
 	}
 
-	
-	public boolean hasDirection(Direction direction){
-		if(paths == null) return false;
+	public boolean hasDirection(Direction direction) {
+		if (paths == null)
+			return false;
 		try {
 			for (int i = 0; i < paths.length; i++) {
-				if (paths[i] == direction) return true;
+				if (paths[i] == direction)
+					return true;
 			}
 			return false;
 		} catch (Exception error) {
@@ -54,32 +55,39 @@ public class Node { // Taken from the maze generation labs.
 		}
 	}
 
-	
-	public Node[] children(Node[][] maze){
+	public Node[] children(Node[][] maze) {
 		java.util.List<Node> children = new java.util.ArrayList<Node>();
 
-		if (row > 0 && maze[row - 1][col].hasDirection(Direction.South) && maze[row - 1][col].isWalkable()) children.add(maze[row - 1][col]); //Add North
-		if (row < maze.length - 1 && maze[row + 1][col].hasDirection(Direction.North) && maze[row + 1][col].isWalkable()) children.add(maze[row + 1][col]); //Add South
-		if (col > 0 && maze[row][col - 1].hasDirection(Direction.East) && maze[row][col - 1].isWalkable()) children.add(maze[row][col - 1]); //Add West
-		if (col < maze[row].length - 1 && maze[row][col + 1].hasDirection(Direction.West) && maze[row][col + 1].isWalkable()) children.add(maze[row][col + 1]); //Add East
+		if (row > 0 && maze[row - 1][col].hasDirection(Direction.South) && maze[row - 1][col].isWalkable())
+			children.add(maze[row - 1][col]); // Add North
+		if (row < maze.length - 1 && maze[row + 1][col].hasDirection(Direction.North)
+				&& maze[row + 1][col].isWalkable())
+			children.add(maze[row + 1][col]); // Add South
+		if (col > 0 && maze[row][col - 1].hasDirection(Direction.East) && maze[row][col - 1].isWalkable())
+			children.add(maze[row][col - 1]); // Add West
+		if (col < maze[row].length - 1 && maze[row][col + 1].hasDirection(Direction.West)
+				&& maze[row][col + 1].isWalkable())
+			children.add(maze[row][col + 1]); // Add East
 
 		return (Node[]) children.toArray(new Node[children.size()]);
 	}
 
-	
-	public Node[] adjacentNodes(Node[][] maze){
+	public Node[] adjacentNodes(Node[][] maze) {
 		java.util.List<Node> adjacents = new java.util.ArrayList<Node>();
 
-		if (row > 0) adjacents.add(maze[row - 1][col]); //Add North
-		if (row < maze.length - 1) adjacents.add(maze[row + 1][col]); //Add South
-		if (col > 0) adjacents.add(maze[row][col - 1]); //Add West
-		if (col < maze[row].length - 1) adjacents.add(maze[row][col + 1]); //Add East
+		if (row > 0)
+			adjacents.add(maze[row - 1][col]); // Add North
+		if (row < maze.length - 1)
+			adjacents.add(maze[row + 1][col]); // Add South
+		if (col > 0)
+			adjacents.add(maze[row][col - 1]); // Add West
+		if (col < maze[row].length - 1)
+			adjacents.add(maze[row][col + 1]); // Add East
 
 		return (Node[]) adjacents.toArray(new Node[adjacents.size()]);
 	}
 
-	
-	public int getHeuristic(Node goal){
+	public int getHeuristic(Node goal) {
 		double x1 = this.col;
 		double y1 = this.row;
 		double x2 = goal.getCol();
@@ -174,6 +182,5 @@ public class Node { // Taken from the maze generation labs.
 	public String toString() {
 		return "[" + row + "/" + col + "]";
 	}
-	
 
 }
