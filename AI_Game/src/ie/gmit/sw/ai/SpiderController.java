@@ -91,7 +91,7 @@ public class SpiderController {
  		
  		switch(outcome) {
  		case 1: // The spider freezes on the spot.
- 			System.out.println("Panic!");
+ 			//System.out.println("Panic!");
  			try {
 					Thread.sleep(10000); // Freeze the thread from moving for 10 seconds.
 					//thread.wait(10000);

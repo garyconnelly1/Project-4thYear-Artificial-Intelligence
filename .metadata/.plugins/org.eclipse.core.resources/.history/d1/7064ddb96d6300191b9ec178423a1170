@@ -1,0 +1,104 @@
+package ie.gmit.sw.ai.nn;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class FileReaderPractice {
+	
+	public static void main(String[] args) {
+		
+		FileReader fileReader;
+		fileReader = null;
+		try {
+			fileReader = new FileReader("resources/neural/Data.txt");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        List<String> lines = new ArrayList<String>();
+        String line = null;
+        try {
+			while ((line = bufferedReader.readLine()) != null) {
+			    lines.add(line);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        try {
+			bufferedReader.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+       // return lines.toArray(new String[lines.size()]);
+    }
+		
+		
+		
+		
+		
+		
+		
+		
+		/*
+		
+		String empty = "";
+		String nullString = null;
+		
+		double[][] data;
+		data = new double[37][3];
+		//double[4][37] data = new double[4][37];
+	//	int i = 0;
+		String[] dataElements;
+		String tuple;
+		String[] dataTuple;
+		int row = 0;
+		
+		/*
+		 * resources/neural/Data.txt
+		 */
+		/*
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader("resources/neural/Data.txt"));
+			String line = reader.readLine();
+			while (line != null) {
+				
+				if(row < 35) {
+					System.out.println(line);
+					// read next line
+					line = reader.readLine();
+					
+					dataTuple = line.split(",");
+					for(int i = 0; i < 3; i++) {
+					//	System.out.println("String: " + Double.parseDouble(dataTuple[i]));
+					
+							//System.out.println("Row - " + row + "Col " + i);
+							data[row][i] = Double.parseDouble(dataTuple[i]);
+							//System.out.println("Data - " + data[row][i]);
+						
+						
+					}
+				}
+				
+				row++;
+				
+				 
+			}
+			reader.close();
+		} catch (IOException e) {
+			System.out.println("Couldnt find file.");
+			e.printStackTrace();
+		}
+		
+		System.out.println("Data 00 - " + data[0][0]);
+	}
+	
+	*/
+
+}

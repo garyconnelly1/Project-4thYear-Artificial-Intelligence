@@ -5,4 +5,6 @@
 <fullyQualifiedTypeName name="ie.gmit.sw.ai.observables.KeyPressed"/>
 <fullyQualifiedTypeName name="ie.gmit.sw.ai.Direction"/>
 <fullyQualifiedTypeName name="ie.gmit.sw.ai.Traversers.Traversator"/>
+<fullyQualifiedTypeName name="ie.gmit.sw.ai.Node"/>
+<fullyQualifiedTypeName name="ie.gmit.sw.ai.Traversers.IDAStarTraversator"/>
 </qualifiedTypeNameHistroy>

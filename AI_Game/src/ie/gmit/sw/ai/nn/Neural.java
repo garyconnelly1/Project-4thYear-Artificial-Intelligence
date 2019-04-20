@@ -1,174 +1,185 @@
 package ie.gmit.sw.ai.nn;
 
-
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import ie.gmit.sw.ai.nn.activator.Activator;
 
 public class Neural {
-	
-	
-	private static final double[][] newData = { // Opponent Health, Opponent Weapon, Opponent Defence
-			{2.0, 0.0, 0.0},{2.0, 0.0, 1.0},{2.0, 0.0, 2.0},{2.0, 1.0, 0.0},
-			//{100.0, 0.0, 0.0},{100.0, 0.0, 50.0},{100.0, 0.0, 100.0},{100.0, 45.0, 0.0},
-			{2.0, 1.0, 1.0},{2.0, 1.0, 2.0},{2.0, 2.0, 0.0},{2.0, 2.0, 1.0},
-			//{100.0, 45.0, 50.0},{100.0, 45.0, 100.0},{100.0, 75.0, 0.0},{100.0, 75.0, 50.0},
-			{2.0, 2.0, 2.0},{2.0, 2.0, 0.0},{2.0, 2.0, 1.0},{2.0, 2.0, 2.0},
-			//{100.0, 75.0, 100.0},{100.0, 100.0, 0.0},{100.0, 100.0, 50.0},{100.0, 100.0, 100.0},
-			
-			{1.0, 0.0, 0.0},{1.0, 0.0, 1.0},{1.0, 0.0, 2.0},{1.0, 1.0, 0.0},
-			//{50.0, 0.0, 0.0},{50.0, 0.0, 50.0},{50.0, 0.0, 100.0},{50.0, 45.0, 0.0},
-			{1.0, 1.0, 1.0},{1.0, 1.0, 2.0},{1.0, 2.0, 0.0},{1.0, 2.0, 1.0},
-			//{50.0, 45.0, 50.0},{50.0, 45.0, 100.0},{50.0, 75.0, 0.0},{50.0, 75.0, 50.0},
-			{1.0, 2.0, 2.0},{1.0, 2.0, 0.0},{1.0, 2.0, 1.0},{1.0, 2.0, 2.0},
-			//{50.0, 75.0, 100.0},{50.0, 100.0, 0.0},{50.0, 100.0, 50.0},{50.0, 100.0, 100.0},
-			
-			{0.0, 0.0, 0.0},{0.0, 0.0, 1.0},{0.0, 0.0, 2.0},{0.0, 1.0, 0.0},
-			//{0.0, 0.0, 0.0},{0.0, 0.0, 50.0},{0.0, 0.0, 100.0},{0.0, 45.0, 0.0},
-			{0.0, 1.0, 1.0},{0.0, 1.0, 2.0},{0.0, 2.0, 0.0},{0.0, 2.0, 1.0},
-			//{0.0, 45.0, 50.0},{0.0, 45.0, 100.0},{0.0, 75.0, 0.0},{0.0, 75.0, 50.0},
-			{0.0, 2.0, 2.0},{0.0, 2.0, 0.0},{0.0, 2.0, 1.0},{0.0, 2.0, 2.0},{2.0, 2.0, 1.0}
-			//{0.0, 75.0, 100.0},{0.0, 100.0, 0.0},{0.0, 100.0, 50.0},{0.0, 100.0, 100.0},{100.0, 100.0, 50.0}
-	};
-	
 	/*
-	 * > 75 = 2.
-	 * > 25 < 75 = 1.
-	 * < 25 = 0. 
+	 * "resources/neural/Data.txt" "resources/neural/Expected.txt"
 	 */
 
-	private static final double[][] newExpected = { // Panic, Attack, Hide, Run
-			//{2.0, 0.0, 0.0},{2.0, 0.0, 1.0},{2.0, 0.0, 2.0},{2.0, 1.0, 0.0},
-			{0.0, 1.0, 0.0, 0.0},{0.0, 0.0, 0.0, 1.0},{0.0, 0.0, 1.0, 0.0},{0.0, 0.0, 0.0, 1.0},
-			//{2.0, 1.0, 1.0},{2.0, 1.0, 2.0},{2.0, 2.0, 0.0},{2.0, 2.0, 1.0},
-			{0.0, 0.0, 1.0, 0.0},{1.0, 0.0, 0.0, 0.0},{0.0, 0.0, 1.0, 0.0},{0.0, 0.0, 1.0, 0.0},
-			//{2.0, 2.0, 2.0},{2.0, 2.0, 0.0},{2.0, 2.0, 1.0},{2.0, 2.0, 2.0},
-			{1.0, 0.0, 0.0, 0.0},{0.0, 0.0, 1.0, 0.0},{1.0, 0.0, 0.0, 0.0},{1.0, 0.0, 0.0, 0.0},
-			
-			//{1.0, 0.0, 0.0},{1.0, 0.0, 1.0},{1.0, 0.0, 2.0},{1.0, 1.0, 0.0},
-			{0.0, 1.0, 0.0, 0.0},{0.0, 1.0, 0.0, 0.0},{0.0, 0.0, 0.0, 1.0},{0.0, 1.0, 0.0, 0.0},
-			//{1.0, 1.0, 1.0},{1.0, 1.0, 2.0},{1.0, 2.0, 0.0},{1.0, 2.0, 1.0},
-			{0.0, 0.0, 0.0, 1.0},{0.0, 0.0, 1.0, 0.0},{0.0, 0.0, 0.0, 1.0},{0.0, 0.0, 1.0, 0.0},
-			//{1.0, 2.0, 2.0},{1.0, 2.0, 0.0},{1.0, 2.0, 1.0},{1.0, 2.0, 2.0},
-			{1.0, 0.0, 0.0, 0.0},{0.0, 0.0, 0.0, 1.0},{0.0, 0.0, 1.0, 0.0},{1.0, 0.0, 0.0, 0.0},
-			
-			//{0.0, 0.0, 0.0},{0.0, 0.0, 50.0},{0.0, 0.0, 100.0},{0.0, 45.0, 0.0},
-			{0.0, 1.0, 0.0, 0.0},{0.0, 1.0, 0.0, 0.0},{0.0, 0.0, 0.0, 1.0},{0.0, 1.0, 0.0, 0.0},
-			//{0.0, 1.0, 1.0},{0.0, 1.0, 2.0},{0.0, 2.0, 0.0},{0.0, 2.0, 1.0},
-			{0.0, 1.0, 0.0, 0.0},{0.0, 0.0, 0.0, 1.0},{0.0, 1.0, 0.0, 0.0},{0.0, 0.0, 0.0, 1.0},
-			//{0.0, 2.0, 2.0},{0.0, 2.0, 0.0},{0.0, 2.0, 1.0},{0.0, 2.0, 2.0},{2.0, 2.0, 1.0}
-			{1.0, 0.0, 0.0, 0.0},{0.0, 1.0, 0.0, 0.0},{0.0, 0.0, 1.0, 0.0},{1.0, 0.0, 0.0, 0.0},{1.0, 0.0, 0.0, 0.0}
-	};
-	
-	
-	/*
-	private static final double[][] data = { // Health, Strength, Defence, Score
-			{ 2, 0, 0 }, { 2, 1, 1 }, { 2, 0, 1 }, { 2, 1, 2 },
-			{ 2, 1, 0}, { 2, 2, 0 }, { 1, 0, 0 }, { 1, 0, 0 },
-			{ 1, 0, 1 }, { 1, 0, 1 }, { 1, 1, 0}, { 1, 2, 0},
-			{ 0, 0, 0}, { 2, 2, 2}, { 0, 0, 1 }, { 1, 1, 1 },
-			{ 0, 1, 0 }, { 0, 1, 0 } };
+	private static final double[][] data = readData("resources/neural/Data.txt");
 
-	private static final double[][] expected = { // Panic, Attack, Hide, Run
-			{ 0.0, 1.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0, 0.0 }, { 0.0, 0.0, 1.0, 0.0 }, { 1.0, 0.0, 0.0, 0.0 },
-			{ 0.0, 0.0, 1.0, 0.0 }, { 1.0, 0.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0, 0.0 },
-			{ 0.0, 0.0, 0.0, 1.0 }, { 0.0, 0.0, 0.0, 1.0 }, { 0.0, 0.0, 0.0, 1.0 }, { 0.0, 0.0, 1.0, 0.0 },
-			{ 0.0, 1.0, 0.0, 0.0 }, { 1.0, 0.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0, 0.0 }, { 0.0, 0.0, 0.0, 1.0 },
-			{ 0.0, 1.0, 0.0, 0.0 }, { 0.0, 1.0, 0.0, 0.0 } };
-			
-			*/
-	
+	private static final double[][] expected = readExpected("resources/neural/Expected.txt");
+
 	private static NeuralNetwork nn = new NeuralNetwork(Activator.ActivationFunction.Sigmoid, 3, 3, 4);
 
 	public static void main(String[] args) throws Exception {
 		trainNetwork();
-		//Scanner scanner = new Scanner(System.in);
-		
-			//	double[][] data = Utils.normalize(newData, 0, 2);
-				
-				
-				process(80,80,80);
-			
-		
-		
+
+		process(50, 50, 80);
+		// process(50,50,80);
 
 	}
-	
+
 	public static void trainNetwork() throws Exception {
-		
-		
+
+		System.out.println("Training Neural Network...");
 		BackpropagationTrainer trainer = new BackpropagationTrainer(nn);
-		trainer.train(newData, newExpected, 0.6, 10000);
-			
+		trainer.train(data, expected, 0.6, 30000);
+
 	}
-	
+
 	public static int process(int health, int strength, int defence) throws Exception {
-		
-		if(health < 25) {
+
+		if (health < 25) {
 			health = 0;
-		}else if(health < 75) {
+		} else if (health < 75) {
 			health = 1;
-		}else {
+		} else {
 			health = 2;
 		}
-		
-		if(strength < 40) {
+
+		if (strength < 40) {
 			strength = 0;
-		}else if(strength < 75) {
+		} else if (strength < 75) {
 			strength = 1;
-		}else {
+		} else {
 			strength = 2;
 		}
-		
-		if(defence < 25) {
+
+		if (defence < 25) {
 			defence = 0;
-		}else if(defence < 75){
+		} else if (defence < 75) {
 			defence = 1;
-		}else {
+		} else {
 			defence = 2;
 		}
+
 		
+
 		
+
+		double[] vector = { health, strength, defence };
+
 		
-		int testIndex = 0;
-		
-		//System.out.println(health);
-		//System.out.println(strength);
-		//System.out.println(defence);
-		
-		double[] vector = {health, strength, defence};
-		
-		
-		
-		//double[] result = nn.process(data[testIndex]);
 		double[] result = nn.process(vector);
-		/*
-		for (int i = 0; i < expected[testIndex].length; i++){
-		 System.out.println(expected[testIndex][i] + ",");
-		}
-		*/
-		System.out.println("==>" + (Utils.getMaxIndex(result) + 1));
 		
+		 
+		 
+		// System.out.println("==>" + (Utils.getMaxIndex(result) + 1));
+
 		int classification = (Utils.getMaxIndex(result) + 1);
-		
-		switch(classification) {
+		System.out.println("Classification ---> " + classification);
+
+		switch (classification) {
 		case 1:
-			System.out.println("Panic.");
+			System.out.println("Neural Network ---> Panic.");
 			break;
 		case 2:
-			System.out.println("Attack");
+			System.out.println("Neural Network ---> Attack");
 			break;
 		case 3:
-			System.out.println("Hide");
+			System.out.println("Neural Network ---> Hide");
+			break;
 		case 4:
-			System.out.println("Run");
-			default:
-				System.out.println("Err.");
+			System.out.println("Neural Network ---> Run ");
+			break;
+		default:
+			System.out.println("Err.");
 		}
-		
-		
+
 		return classification;
-		
+
+	}
+
+	public static double[][] readData(String fileName) {
+		FileReader fileReader;
+		fileReader = null;
+		String[] dataTuple;
+		double[][] data;
+		data = new double[37][3];
+		try {
+			fileReader = new FileReader(fileName);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		BufferedReader bufferedReader = new BufferedReader(fileReader);
+		List<String> lines = new ArrayList<String>();
+		String line = null;
+		try {
+			while ((line = bufferedReader.readLine()) != null) {
+				lines.add(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			bufferedReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String[] myLines = lines.toArray(new String[lines.size()]);
+
+		int i = 0;
+		for (String s : myLines) {
+			dataTuple = myLines[i].split(",");
+			for (int j = 0; j < dataTuple.length; j++) {
+				data[i][j] = Double.parseDouble(dataTuple[j]);
+			}
+			i++;
+
+		}
+
+		return data;
+	}
+
+	public static double[][] readExpected(String fileName) {
+		FileReader fileReader;
+		fileReader = null;
+		String[] dataTuple;
+		double[][] data;
+		data = new double[37][4];
+		try {
+			fileReader = new FileReader(fileName);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		BufferedReader bufferedReader = new BufferedReader(fileReader);
+		List<String> lines = new ArrayList<String>();
+		String line = null;
+		try {
+			while ((line = bufferedReader.readLine()) != null) {
+				lines.add(line);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			bufferedReader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String[] myLines = lines.toArray(new String[lines.size()]);
+
+		int i = 0;
+		for (String s : myLines) {
+			dataTuple = myLines[i].split(",");
+			for (int j = 0; j < dataTuple.length; j++) {
+				data[i][j] = Double.parseDouble(dataTuple[j]);
+			}
+			i++;
+
+		}
+
+		return data;
 	}
 
 }

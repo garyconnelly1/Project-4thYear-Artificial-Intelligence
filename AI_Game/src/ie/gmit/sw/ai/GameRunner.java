@@ -3,17 +3,11 @@ package ie.gmit.sw.ai;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 
-import ie.gmit.sw.ai.Traversers.AStarTraversator;
-import ie.gmit.sw.ai.Traversers.BasicHillClimbingTraversator;
-import ie.gmit.sw.ai.Traversers.BeamTraversator;
-import ie.gmit.sw.ai.Traversers.BestFirstTraversator;
-import ie.gmit.sw.ai.Traversers.DepthLimitedDFSTraversator;
-import ie.gmit.sw.ai.Traversers.Traversator;
 import ie.gmit.sw.ai.nn.Neural;
 import ie.gmit.sw.ai.observables.KeyPressed;
 import ie.gmit.sw.ai.observers.PlayerObserver;
@@ -30,12 +24,34 @@ public class GameRunner {//implements KeyListener {
 	private Sprite[] sprites;
 
 	public GameRunner() throws Exception {
-
+		gameMenu();
 		newFrame();
 		// initNewGame("Hard"); //////////////////////////////////////////
 		initNewGame("Normal"); //////////////////////////////////////////
 		gameFrame.repaint();
 
+	}
+	
+	public void gameMenu() {
+		Scanner console = new Scanner(System.in);
+		int exitStrategy = 0;
+		System.out.println("Enter Your Exit Strategy: ");
+		System.out.println("---------------------------");
+		System.out.println("Press 1 --> A Star Algorithm.");
+		System.out.println("Press 2 --> Beam Search Algorithm.");
+		System.out.println("Press 3 --> Best First Search  Algorithm.");
+		System.out.println("Press 4 --> Iterative Deepening A Star Algorithm.");
+		System.out.println("Press 5 ---> Basic Hill Climbing Algorithm.");
+		exitStrategy = console.nextInt();
+		console.close();
+		
+		if(exitStrategy < 1 || exitStrategy > 5) {
+			exitStrategy = 0;
+		}else{
+			PlayerController.setExitAlgorithm(exitStrategy -1);
+		}
+		
+		
 	}
 
 	// Abstract the different parts of building the view.

@@ -17,6 +17,8 @@ public class PlayerController{
 	 * 
 	 */
 	
+	public static int exitAlgorithm = 0;
+	
 	
 	public static boolean isValidMove(GameSetup setup, int r, int c) {
 
@@ -162,29 +164,38 @@ public class PlayerController{
 	}
 	
 	
-	public static Traversator algorithm(GameSetup setup, int randNum) {
+	public static Traversator algorithm(GameSetup setup) {
 		// Selecting a random algorithm to be created and returned
-		switch (randNum) {
+		switch (exitAlgorithm) {
 		case 0:
 			return new AStarTraversator(setup.getModel().getGoalNode(), false);
 		case 1:
 			return new BeamTraversator(setup.getModel().getGoalNode(), 10);
 		case 2:
-			// return new SimulatedAnnealingTraversator(game.getModel().getGoalNode());
-		case 3:
 			return new BestFirstTraversator(setup.getModel().getGoalNode());
+		case 3:
+			return new IDAStarTraversator(setup.getModel().getGoalNode());
 		case 4:
 			return new BasicHillClimbingTraversator(setup.getModel().getGoalNode());
+			//return new BasicHillClimbingTraversator(setup.getModel().getGoalNode());
 		case 5:
+			//return new BasicHillClimbingTraversator(setup.getModel().getGoalNode());
 			// return new DepthLimitedDFSTraversator(game.getMaze().length);
-			return new DepthLimitedDFSTraversator(5); // Only works sometimes.
+			
 		case 6:
-			 return new IDAStarTraversator(setup.getModel().getGoalNode());
+			//return new DepthLimitedDFSTraversator(5); // Only works sometimes.
+			// return new SimulatedAnnealingTraversator(game.getModel().getGoalNode());
+			//return new BasicHillClimbingTraversator(setup.getModel().getGoalNode());
 		case 7:
 			// return new IDDFSTraversator();
 		default:
 			return new AStarTraversator(setup.getModel().getGoalNode(), false);
 		}
+	}
+	
+	public static void setExitAlgorithm(int algorithm) {
+		exitAlgorithm = algorithm;
+		System.out.println("Algorithm chosen: " + exitAlgorithm);
 	}
 
 

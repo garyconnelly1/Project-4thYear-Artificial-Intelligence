@@ -87,7 +87,7 @@ public class PlayerObserver implements KeyObserver{
 			// Traversator traverse = algorithm(2); // Try to make it do SimulatedAnnealing.
 			// Traversator traverse = PlayerController.algorithm(setup, 5); // Try to make it do DLDFS.
 			//Traversator traverse = PlayerController.algorithm(setup, 0); // Try to make it do A*.
-			Traversator traverse = PlayerController.algorithm(setup, 6); // Try to make it do IDA*.
+			Traversator traverse = PlayerController.algorithm(setup); // Try to make it do IDA*.
 			traverse.traverse(setup.getMaze(),
 					setup.getMaze()[setup.getPlayer().getRowPos()][setup.getPlayer().getColPos()]);
 			setup.getPlayer().setHelp(false);

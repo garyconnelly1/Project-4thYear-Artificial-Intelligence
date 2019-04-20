@@ -1,0 +1,57 @@
+package ie.gmit.sw.ai.nn;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class FileReaderPractice {
+	
+	public static void main(String[] args) {
+		
+		String empty = "";
+		String nullString = null;
+		
+		double[][] data;
+		data = new double[37][3];
+		//double[4][37] data = new double[4][37];
+	//	int i = 0;
+		String[] dataElements;
+		String tuple;
+		String[] dataTuple;
+		int row = 0;
+		
+		/*
+		 * resources/neural/Data.txt
+		 */
+		BufferedReader reader;
+		try {
+			reader = new BufferedReader(new FileReader("resources/neural/Data.txt"));
+			String line = reader.readLine();
+			while (line != null) {
+				System.out.println(line);
+				// read next line
+				line = reader.readLine();
+				dataTuple = line.split(",");
+				for(int i = 0; i < 3; i++) {
+				//	System.out.println("String: " + Double.parseDouble(dataTuple[i]));
+				
+						
+						data[row][i] = Double.parseDouble(dataTuple[i]);
+						System.out.println("Row - " + data[row][i]);
+					
+					
+				}
+				row++;
+				
+				 
+			}
+			reader.close();
+		} catch (IOException e) {
+			System.out.println("Couldnt find file.");
+			e.printStackTrace();
+		}
+		
+		System.out.println(data[0][0]);
+	}
+
+}
