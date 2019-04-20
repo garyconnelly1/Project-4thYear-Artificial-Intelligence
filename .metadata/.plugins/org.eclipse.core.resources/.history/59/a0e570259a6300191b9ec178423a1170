@@ -76,6 +76,9 @@ public class SpiderController {
 	 
 	 public static boolean classify(Spider thread, int row, int col) {
 	    	
+	    	
+	    	System.out.println("Neural.");
+ 		
  		int outcome = 5; // Default it to run.
  		
  		try {

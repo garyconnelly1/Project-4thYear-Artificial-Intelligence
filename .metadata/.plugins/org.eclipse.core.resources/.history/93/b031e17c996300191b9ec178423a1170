@@ -141,7 +141,7 @@ public class PlayerController{
 	public static boolean fight(Node[][] maze, GameSetup setup, int r, int c) {
 		FuzzyFight fuzzyBattle1 = new FuzzyFight();
 		boolean enemyWon1 = fuzzyBattle1.startBattle(setup.getPlayer(),
-				setup.getEnemies().get(setup.getMaze()[r][c].getEnemyID()), "resources/fuzzy/fcl/fuzzyFight.fcl");
+				setup.getEnemies().get(setup.getMaze()[r][c].getEnemyID()), "fcl/fuzzyFight.fcl");
 		if (enemyWon1 == true) {
 			// The player has lost the game!
 			maze[setup.getPlayer().getRowPos()][setup.getPlayer().getColPos()].setNodeType(' ');

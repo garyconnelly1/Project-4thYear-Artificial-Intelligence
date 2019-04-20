@@ -22,7 +22,6 @@ public class GameRunner {//implements KeyListener {
 	private GameView gamePanel;
 	private GameSetup setup;
 	private Sprite[] sprites;
-	boolean isGold;
 
 	public GameRunner() throws Exception {
 		gameMenu();
@@ -37,7 +36,7 @@ public class GameRunner {//implements KeyListener {
 		Scanner console = new Scanner(System.in);
 		int exitStrategy = 0;
 		int goal;
-		isGold = true;
+		boolean isGold;
 		System.out.println("Enter Your Exit Strategy: ");
 		System.out.println("---------------------------");
 		System.out.println("Press 1 --> A Star Algorithm.");
@@ -59,12 +58,6 @@ public class GameRunner {//implements KeyListener {
 			exitStrategy = 0;
 		}else{
 			PlayerController.setExitAlgorithm(exitStrategy -1);
-		}
-		
-		if(goal == 2) {
-			isGold = false;
-		}else {
-			isGold = true;
 		}
 		
 		
@@ -121,7 +114,6 @@ public class GameRunner {//implements KeyListener {
 		setup.setEnemies(spiders);
 		setup.placePlayer(model.getGoalPos());
 		setup.placeEnemies(gameDifficulty);
-		setup.setGold(isGold);
 
 		try {
 			sprites = setup.getSprites();

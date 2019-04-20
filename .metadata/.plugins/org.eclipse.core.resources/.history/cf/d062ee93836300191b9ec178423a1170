@@ -10,11 +10,8 @@ public class GameSetup {
     private Node[][] maze;
     private ControlledSprite player;
     private ArrayList<Spider> spiders;
-    private  boolean isGold = false;
     
-   
-
-	public GameSetup(Maze model, Node[][] maze, ControlledSprite player, ArrayList<Spider> enemies) {
+    public GameSetup(Maze model, Node[][] maze, ControlledSprite player, ArrayList<Spider> enemies) {
         setModel(model);
         setMaze(maze);
         setPlayer(player);
@@ -214,14 +211,6 @@ public class GameSetup {
         this.spiders = spiders;
     }
     
-    public boolean isGold() {
-		return isGold;
-	}
-
-	public void setGold(boolean isGold) {
-		this.isGold = isGold;
-	}
-    
 public Sprite[] getSprites() throws Exception {
 		
 
@@ -239,12 +228,8 @@ public Sprite[] getSprites() throws Exception {
 		sprites[10] = new Sprite("Green1", 1, "resources/images/spiders/green_spider_1.png");
 		sprites[11] = new Sprite("Food", 1, "resources/images/objects/food.png");
 		sprites[12] = new Sprite("Shield", 1, "resources/images/objects/shield.png");
-		sprites[13] = new Sprite("Chest", 1, "resources/images/objects/chest.png");
-		if(isGold) {
-			sprites[14] = new Sprite("Gold", 1, "resources/images/objects/goal.png");
-		}else {
-			sprites[14] = new Sprite("Gold", 1, "resources/images/objects/jamseson.png");	
-		}
+		sprites[13] = new Sprite("Chest", 1, "resources/images/objects/jameson.png");
+		sprites[14] = new Sprite("Gold", 1, "resources/images/objects/goal.png");
 		sprites[15] = new Sprite("Lose", 1, "resources/images/objects/rip-2.png");
 		sprites[16] = new Sprite("Player", 1, "resources/images/player/d1.png");
 		sprites[17] = new Sprite("Bomb", 1, "resources/images/objects/bomb.png");

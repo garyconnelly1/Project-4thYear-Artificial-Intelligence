@@ -24,7 +24,7 @@ public class Neural {
 	public static void main(String[] args) throws Exception {
 		trainNetwork();
 
-		process(80, 50, 20);
+		process(50, 50, 80);
 		// process(50,50,80);
 
 	}
