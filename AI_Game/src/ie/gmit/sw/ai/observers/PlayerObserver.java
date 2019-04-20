@@ -2,13 +2,13 @@ package ie.gmit.sw.ai.observers;
 
 import java.awt.event.KeyEvent;
 
-import ie.gmit.sw.ai.ControlledSprite;
 import ie.gmit.sw.ai.Direction;
 import ie.gmit.sw.ai.GameSetup;
-import ie.gmit.sw.ai.GameView;
-import ie.gmit.sw.ai.PlayerController;
 import ie.gmit.sw.ai.Traversers.Traversator;
+import ie.gmit.sw.ai.controllers.PlayerController;
+import ie.gmit.sw.ai.gui.GameView;
 import ie.gmit.sw.ai.observables.KeyPressed;
+import ie.gmit.sw.ai.sprites.ControlledSprite;
 
 public class PlayerObserver implements KeyObserver{
 	

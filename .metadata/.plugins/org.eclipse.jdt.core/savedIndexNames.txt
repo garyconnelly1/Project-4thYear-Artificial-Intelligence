@@ -10,7 +10,6 @@ INDEX VERSION 1.131+C:\Users\Gary\Desktop\AIbackup\.metadata\.plugins\org.eclips
 3498974549.index
 921183347.index
 1794327708.index
-3047032125.index
 1897928139.index
 3431489974.index
 402782763.index

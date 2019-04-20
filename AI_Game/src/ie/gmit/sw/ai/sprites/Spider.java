@@ -1,0 +1,225 @@
+package ie.gmit.sw.ai.sprites;
+
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Random;
+
+import ie.gmit.sw.ai.Node;
+import ie.gmit.sw.ai.Traversers.AStarTraversator;
+import ie.gmit.sw.ai.controllers.SpiderController;
+import ie.gmit.sw.ai.nn.Neural;
+
+//public class Spider extends GameCharacter implements Runnable{
+public class Spider extends GameCharacter implements Runnable{
+	
+	    private int id;
+	    private int strength;
+	    private boolean aStar;
+	    private int algorithm;
+	    private Thread instance;
+	    private Node[][] maze;
+	    private ControlledSprite player;
+	    private boolean run;
+	    private int playerRowTemp;
+	    private int playerColTemp;
+	    private int minUpdateTime;
+	    private int maxUpdateTime;
+	    private Node pathGoal;
+	    private AStarTraversator traverse;
+	    private LinkedList<Node> nodeListPath;
+	    private boolean sleep = false;
+
+	    public boolean isSleep() {
+			return sleep;
+		}
+
+		public void setSleep(boolean sleep) {
+			this.sleep = sleep;
+		}
+
+		public Spider() {
+	        super();
+	        setStrength(0);
+	        setBoss(false);
+	        setAlgorithm(0);
+	    }
+
+	    public Spider(int id, int health,  boolean boss) {
+	        super(health);
+	        setId(id);
+	        setBoss(boss);
+	        setAlgorithm(0);
+	    }
+
+	    @Override
+	    public void run() {
+	        while(isRun()){ // Keep moving the spider while it is alive and while the game is on.
+	        	
+	        	
+	            try {
+	                if(this.getHealth() <= 0 || player.isGameOver()){
+	                    setRun(false);
+	                    break;
+	                }
+	              
+	                Thread.sleep(new Random().nextInt((getMaxUpdateTime() - getMinUpdateTime()) + 1) + getMinUpdateTime());
+	          
+	                switch(getAlgorithm()){
+	                    case 0:
+	                        SpiderController.randomWalk(this, new Random().nextInt((3 - 0) + 1) + 0);
+	                        break;
+	                    case 1:
+	                    	SpiderController.huntPlayer(this);
+	                        break;
+	                    default:
+	                        SpiderController.randomWalk(this, new Random().nextInt((3 - 0) + 1) + 0);
+	                        break;
+	                }
+
+	            } catch (InterruptedException error) {
+	                System.out.println("Error - " + error);
+	            }
+	        }
+	    }
+	    
+	  
+	
+
+	    public int getId()
+	    {
+	        return id;
+	    }
+
+	    public void setId(int id) {
+	        this.id = id;
+	    }
+
+	    public int getStrength() {
+	        return strength;
+	    }
+
+	    public void setStrength(int strength) {
+	        this.strength = strength;
+	    }
+
+	    public boolean isAstar() {
+	        return aStar;
+	    }
+
+	    public void setBoss(boolean aStar) {
+	        this.aStar = aStar;
+	    }
+
+	    public int getAlgorithm() {
+	        return algorithm;
+	    }
+
+	    public void setAlgorithm(int algorithm) {
+	        this.algorithm = algorithm;
+	    }
+
+	    public Thread getInstance() {
+	        return instance;
+	    }
+
+	    public void setInstance(Thread instance) {
+	        this.instance = instance;
+	    }
+
+	    public Node[][] getMaze() {
+	        return maze;
+	    }
+
+	    public void setMaze(Node[][] maze) {
+	        this.maze = maze;
+	    }
+
+	    public ControlledSprite getPlayer() {
+	        return player;
+	    }
+
+	    public void setPlayer(ControlledSprite player) {
+	        this.player = player;
+	    }
+
+	    public boolean isRun() {
+	        return run;
+	    }
+
+	    public void setRun(boolean run) {
+	        this.run = run;
+	    }
+
+	    public int getPlayerRowT() {
+	        return playerRowTemp;
+	    }
+
+	    public void setPlayerRowT(int playerRowT) {
+	        this.playerRowTemp = playerRowT;
+	    }
+
+	    public int getPlayerColT() {
+	        return playerColTemp;
+	    }
+
+	    public void setPlayerColT(int playerColT) {
+	        this.playerColTemp = playerColT;
+	    }
+
+	    public int getPlayerRowTemp() {
+	        return playerRowTemp;
+	    }
+
+	    public void setPlayerRowTemp(int playerRowTemp) {
+	        this.playerRowTemp = playerRowTemp;
+	    }
+
+	    public int getPlayerColTemp() {
+	        return playerColTemp;
+	    }
+
+	    public void setPlayerColTemp(int playerColTemp) {
+	        this.playerColTemp = playerColTemp;
+	    }
+
+	    public int getMinUpdateTime() {
+	        return minUpdateTime;
+	    }
+
+	    public void setMinUpdateTime(int minUpdateTime) {
+	        this.minUpdateTime = minUpdateTime;
+	    }
+
+	    public int getMaxUpdateTime() {
+	        return maxUpdateTime;
+	    }
+
+	    public void setMaxUpdateTime(int maxUpdateTime) {
+	        this.maxUpdateTime = maxUpdateTime;
+	    }
+
+	    public Node getPathGoal() {
+	        return pathGoal;
+	    }
+
+	    public void setPathGoal(Node pathGoal) {
+	        this.pathGoal = pathGoal;
+	    }
+
+	    public AStarTraversator getTraverse() {
+	        return traverse;
+	    }
+
+	    public void setTraverse(AStarTraversator traverse) {
+	        this.traverse = traverse;
+	    }
+
+	    public LinkedList<Node> getNodeListPath() {
+	        return nodeListPath;
+	    }
+
+	    public void setNodeListPath(LinkedList<Node> nodeListPath) {
+	        this.nodeListPath = nodeListPath;
+	}
+
+}

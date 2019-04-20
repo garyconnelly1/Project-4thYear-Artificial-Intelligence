@@ -3,6 +3,11 @@ package ie.gmit.sw.ai;
 import java.util.ArrayList;
 import java.util.Random;
 
+import ie.gmit.sw.ai.gui.GameRunner;
+import ie.gmit.sw.ai.sprites.ControlledSprite;
+import ie.gmit.sw.ai.sprites.Spider;
+import ie.gmit.sw.ai.sprites.Sprite;
+
 public class GameSetup {
 	public static final int IMAGE_COUNT = 20;
 	
