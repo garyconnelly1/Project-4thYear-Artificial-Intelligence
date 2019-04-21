@@ -9,6 +9,9 @@ import ie.gmit.sw.ai.sprites.Spider;
 import ie.gmit.sw.ai.sprites.Sprite;
 
 public class GameSetup {
+	/*
+	 * Sets up the game environment.
+	 */
 	public static final int IMAGE_COUNT = 20;
 
 	private Maze model;
@@ -27,38 +30,42 @@ public class GameSetup {
 	public GameSetup() {
 	}
 
+	/*
+	 * Place the player as far away from the exit as possible.
+	 */
 	public void placePlayer(int goalPos) {
 		Random random = new Random();
 		boolean playerPosSet = false;
 
-		// Continue to loop until a good position is found
+		// Continue to loop until a good position is found.
 		while (playerPosSet != true) {
 
 			switch (goalPos) {
 			case 0:
-				// Creates the player on the top side of the maze
+				// Place the player on the top of the maze.
 				player.setRowPos(random.nextInt((3 - 2) + 1) + 2);
 				player.setColPos(random.nextInt((getMaze()[0].length - 5) + 1) + 5);
 				break;
 			case 1:
-				// Creates the player on the left side of the maze
+				// Place the player on the left of the maze.
 				player.setRowPos(random.nextInt(((getMaze().length - 15) - 1) + 1) + 1);
 				player.setColPos(random.nextInt((3 - 2) + 1) + 2);
 				break;
 			case 2:
-				// Creates the player on the bottom side of the maze
+				// Place the player on the bottom of the maze.
 				player.setRowPos(random.nextInt(((getMaze().length - 15) - (getMaze().length - 15)) + 1)
 						+ (getMaze().length - 15));
 				player.setColPos(random.nextInt((getMaze()[0].length - 5) + 1) + 5);
 				break;
-			default:
+			default: // 	Place the player on the right of the maze.
 				player.setRowPos(random.nextInt(((getMaze().length - 15) - 1) + 1) + 1);
 				player.setColPos(random.nextInt((3 - 2) + 1) + 2);
 				break;
 			}
 
-			// Checking if the area is walkable, if true then place the player and setting
-			// the node type
+			/*
+			 * Place the player on the node only if it can be walked on.
+			 */
 			try {
 				if (maze[getPlayer().getRowPos()][getPlayer().getColPos()].isWalkable()) {
 					maze[getPlayer().getRowPos()][getPlayer().getColPos()].setNodeType('P');
@@ -70,10 +77,13 @@ public class GameSetup {
 		}
 	}
 
+	/*
+	 * Setup the enemy threads and place them in the maze.
+	 */
 	public void placeEnemies() {
 		int amount;
 		int health;
-		int bosses;
+		int bosses; // For the Astar spiders.
 		boolean isAstar = false;
 
 		amount = 50;
@@ -90,7 +100,7 @@ public class GameSetup {
 				bosses--;
 			}
 
-			// Create an enemy object & create new thread
+			// Initialize the enemy threads and attributes.
 			Runnable enemy = new Spider(i, health, isAstar);
 			Thread thread = new Thread(enemy);
 			this.spiders.add((Spider) enemy);
@@ -101,20 +111,23 @@ public class GameSetup {
 			this.spiders.get(i).setMinUpdateTime(600);
 			this.spiders.get(i).setMaxUpdateTime(750);
 
-			// Set the boss objects to be able to use A star algorithm. Change this to use
-			// other algorithms too.
+			/*
+			 * Allow the boss spiders to use the A* algorithm to search for the player.
+			 */
 			if (isAstar)
 
 				this.spiders.get(i).setAlgorithm(1);
 
 			boolean enemyPosSet = false;
 
-			// Continue to loop until a good position is found
+			/*
+			 * Look for a suitable place to put the spider.
+			 */
 			while (enemyPosSet != true) {
 				this.spiders.get(i).setRowPos((int) (GameRunner.MAZE_DIMENSION * Math.random()));
 				this.spiders.get(i).setColPos((int) (GameRunner.MAZE_DIMENSION * Math.random()));
 
-				// Checking if the area is walkable, if true then place enemy
+				// Checking if the area is walkable, if true then place enemy.
 				if (maze[spiders.get(i).getRowPos()][spiders.get(i).getColPos()].isWalkable()) {
 					maze[spiders.get(i).getRowPos()][spiders.get(i).getColPos()].setNodeType('S');
 					if (this.spiders.get(i).isAstar())
@@ -129,17 +142,7 @@ public class GameSetup {
 		}
 	}
 
-	/**
-	 * Kills the previously running enemy threads
-	 */
-	public void killEnemyThreads() {
-		if (this.spiders == null || this.spiders.size() <= 0)
-			return;
-		for (int i = 0; i < this.spiders.size(); i++) {
-			this.spiders.get(i).setHealth(0);
-			this.spiders.get(i).setRun(false);
-		}
-	}
+	
 
 	public Maze getModel() {
 		return model;

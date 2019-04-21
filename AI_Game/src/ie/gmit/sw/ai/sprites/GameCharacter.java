@@ -1,6 +1,11 @@
 package ie.gmit.sw.ai.sprites;
 
 public class GameCharacter {
+	/*
+	 * Super-class for the spider. Initially was created because I though I would have a separate class
+	 * for the A* spider and regular spider, but ended up putting them in the same class meaning this class
+	 * has only one sub-class..
+	 */
 	private int health;
 
 	private int rowPos;

@@ -1,9 +1,0 @@
-package ie.gmit.sw.ai.nn;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
-public class FileReaderPractice {
-
-}

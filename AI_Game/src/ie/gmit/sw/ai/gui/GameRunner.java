@@ -19,26 +19,46 @@ import ie.gmit.sw.ai.sprites.ControlledSprite;
 import ie.gmit.sw.ai.sprites.Spider;
 import ie.gmit.sw.ai.sprites.Sprite;
 
-public class GameRunner {// implements KeyListener {
+public class GameRunner {
+	
+	/*
+	 * Instance variables used by this class.
+	 */
 	public static final int MAZE_DIMENSION = 100;
 	public static final int IMAGE_COUNT = 20;
 	private ControlledSprite player;
 	private JFrame gameFrame;
-
-	// The game controller object instance & game view panel
 	private GameView gamePanel;
 	private GameSetup setup;
 	private Sprite[] sprites;
-	boolean isGold;
+	private boolean isGold;
 
+	
+	
 	public GameRunner() throws Exception {
+		/*
+		 * Launch the initial game menu.
+		 */
 		gameMenu();
+		/*
+		 * Create the game frame.
+		 */
 		newFrame();
+		/*
+		 * Initialise 
+		 */
 		initNewGame();
+		/*
+		 * Paint the frame.
+		 */
 		gameFrame.repaint();
 
 	}
 
+	/*
+	 * Simple console menu that asks the user what exit search algorithm they wish tp use,
+	 * as well as what they wish their goal to be.
+	 */
 	public void gameMenu() {
 		Scanner console = new Scanner(System.in);
 		int exitStrategy = 0;
@@ -73,10 +93,15 @@ public class GameRunner {// implements KeyListener {
 
 	}
 
-	// Abstract the different parts of building the view.
+	/*
+	 * Create the main game frame.
+	 */
 	private void newFrame() {
 		gameFrame = new JFrame("GMIT - B.Sc. in Computing (Software Development) - Gary Connelly");
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		/*
+		 * Add the key listener instance.
+		 */
 		gameFrame.addKeyListener(KeyPressed.getInstance());
 		gameFrame.getContentPane().setLayout(null);
 		gameFrame.getContentPane().setBackground(Color.black);
@@ -85,17 +110,24 @@ public class GameRunner {// implements KeyListener {
 		gameFrame.setVisible(true);
 	}
 
+	/*
+	 * Initialize the new game.
+	 */
 	public void initNewGame() {
-		if (setup != null)
-			setup.killEnemyThreads();
-
-		if (gamePanel != null)
-			gameFrame.getContentPane().remove(gamePanel);
-
+		
+		/*
+		 * Set up the game environment.
+		 */
 		setup = new GameSetup();
 
+		/*
+		 * Begin a new game.
+		 */
 		newGame();
 
+		/*
+		 * Repaint the frame.
+		 */
 		gameFrame.repaint();
 
 	}
@@ -115,6 +147,9 @@ public class GameRunner {// implements KeyListener {
 		}
 		ArrayList<Spider> spiders = new ArrayList<Spider>();
 		Dimension d = new Dimension(800, 800);
+		/*
+		 * Set the different elements of the game.
+		 */
 		setup.setModel(model);
 		setup.setMaze(maze);
 		setup.setPlayer(player);
@@ -129,6 +164,9 @@ public class GameRunner {// implements KeyListener {
 			System.out.println("Error reading images.");
 			e.printStackTrace();
 		}
+		/*
+		 * Setup the game view.
+		 */
 		gamePanel = new GameView(setup, sprites); // Pass sprites in here.
 		gamePanel.setSize(800, 800);
 		gamePanel.setLocation(0, 0);
@@ -139,6 +177,9 @@ public class GameRunner {// implements KeyListener {
 
 		updateView();
 
+		/*
+		 * Initialize the player observer to listen for key press events.
+		 */
 		new PlayerObserver(gamePanel, setup, setup.getPlayer());
 	}
 
@@ -153,9 +194,18 @@ public class GameRunner {// implements KeyListener {
 	public void keyTyped(KeyEvent e) {
 	} // Ignore
 
+	/*
+	 * Application entry point.
+	 */
 	public static void main(String[] args) throws Exception {
 
+		/*
+		 * Train the neural network.
+		 */
 		Neural.trainNetwork();
+		/*
+		 * Start the game.
+		 */
 		new GameRunner();
 	}
 }

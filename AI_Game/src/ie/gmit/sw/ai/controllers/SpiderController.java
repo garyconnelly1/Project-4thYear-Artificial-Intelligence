@@ -11,18 +11,28 @@ import ie.gmit.sw.ai.nn.Neural;
 import ie.gmit.sw.ai.sprites.Spider;
 
 public class SpiderController {
+	/*
+	 * Controls the spider sprite's behaviour.
+	 */
 
 	private static boolean isValidMove(Spider thread, int row, int col) {
-
+		
+		/*
+		 * If the game is over, don't let the sprites move.
+		 */
 		if (thread.getPlayer().isGameOver())
 			return false;
+		/*
+		 * If the spider is at an edge, don't let them move.
+		 */
 		if ((row < 0) || (col < 0) || !(row <= thread.getMaze().length - 1 && col <= thread.getMaze()[row].length - 1))
 			return false;
 
 		switch (thread.getMaze()[row][col].getNodeType()) {
-		case ' ':
-			thread.getMaze()[thread.getRowPos()][thread.getColPos()].setNodeType(' '); // Paint the road where the
-																						// spider was.
+		case ' ': /* If it is a road node, move the spider into it and repaint the spiders original
+					 node as a road node.
+				  */
+			thread.getMaze()[thread.getRowPos()][thread.getColPos()].setNodeType(' '); 
 			thread.getMaze()[row][col].setNodeType('S');
 			if (thread.isAstar())
 				thread.getMaze()[row][col].setNodeType('A');
@@ -30,18 +40,20 @@ public class SpiderController {
 					.setEnemyID(thread.getMaze()[thread.getRowPos()][thread.getColPos()].getEnemyID());
 			thread.getMaze()[thread.getRowPos()][thread.getColPos()].setEnemyID(0);
 			return true;
-		case 'P':
+		case 'P': /* If it is the player node.
+				  */
 			if (thread.isAstar()) {
-
+				// If the spider is an A* spider, fight.
 				return fight(thread, row, col);
 
 			} else {
-
+				// Of it is a regular spider, classify what to do next.
 				return classify(thread, row, col);
 
 			}
 
-		case 'Q':
+		case 'Q': /* If it is a quickest path(for the player) node, allow the spider to walk into it.
+				  */
 			thread.getMaze()[thread.getRowPos()][thread.getColPos()].setNodeType(' ');
 			if (thread.isAstar())
 				thread.getMaze()[row][col].setNodeType('A');
@@ -55,17 +67,21 @@ public class SpiderController {
 
 	}
 
+	/*
+	 * The method that encapsulates the fuzzy logic fight implementation from the spiders point of view.
+	 */
 	public static boolean fight(Spider thread, int row, int col) {
 		FuzzyFight fuzzyFight = new FuzzyFight();
 		boolean enemyWon = fuzzyFight.startBattle(thread.getPlayer(), thread, "resources/fuzzy/fcl/fuzzyFight.fcl");
 		if (enemyWon == true) {
-			// The player has lost the game!
+			// The player has lost the fight, set game over to true and paint the 'RIP' image in the players place.
 			thread.getMaze()[thread.getRowPos()][thread.getColPos()].setNodeType(' ');
 			thread.getMaze()[thread.getRowPos()][thread.getColPos()].setEnemyID(0);
 			thread.getPlayer().setGameOver(true);
 			thread.getMaze()[row][col].setNodeType('L');
 
 		} else {
+			// The player won the fight, paint the blue(dead) spider in it's place. 
 			thread.getMaze()[thread.getRowPos()][thread.getColPos()].setNodeType('D');
 			if (thread.isAstar())
 				thread.getMaze()[thread.getRowPos()][thread.getColPos()].setNodeType('D');
@@ -76,11 +92,15 @@ public class SpiderController {
 		return enemyWon;
 	}
 
+	/*
+	 * Method encapsulates the neural network implementation.
+	 */
 	public static boolean classify(Spider thread, int row, int col) {
 
 		int outcome = 5; // Default it to run.
 
 		try {
+			// Pass in the players attributes as the inputs to the neural netowkr.
 			outcome = Neural.process(thread.getPlayer().getHealth(), thread.getPlayer().getWeaponStrength(),
 					thread.getPlayer().getDefence());
 		} catch (Exception e) {
@@ -89,7 +109,7 @@ public class SpiderController {
 		}
 
 		switch (outcome) {
-		case 1: // The spider freezes on the spot.
+		case 1: // The spider freezes on the spot.(Panic.)
 
 			try {
 				Thread.sleep(10000); // Freeze the thread from moving for 10 seconds.
@@ -102,22 +122,28 @@ public class SpiderController {
 			break;
 		case 2: // Attack the player.
 			return fight(thread, row, col);
-		case 3: // Teleport away from the player.
+		case 3: // Teleport away from the player.(Hide.)
 			hide(thread);
 			return false;
 		case 4:
-			return false;
+			return false; // Just move the spider to a new node, gives the illusion the spider is running away.
 		default: // The default is to run away.
 			return false;
 		}
 		return false;
 	}
 
+	/*
+	 * Allows A* spiders to use the A* algorithm to find the player.
+	 */
 	public static void huntPlayer(Spider thread) {
-
+		
+		/*
+		 * If the player has moved since the last computation, recompute the path to the player's location.
+		 */
 		if (thread.getPlayerRowT() != thread.getPlayer().getRowPos()
-				|| thread.getPlayerColT() != thread.getPlayer().getColPos()) { // If the player has moved.
-
+				|| thread.getPlayerColT() != thread.getPlayer().getColPos()) { 
+			
 			thread.setNodeListPath(new LinkedList<Node>());
 			thread.setPlayerRowT(thread.getPlayer().getRowPos()); // The players current row.
 			thread.setPlayerColT(thread.getPlayer().getColPos()); // The players current col.
@@ -127,22 +153,25 @@ public class SpiderController {
 																														// maze,
 																														// current
 																														// node.
-
+			// If the player node is found.
 			if (thread.getTraverse().isFoundGoal()) {
-
+				/*
+				 * Get the path back to the current node by getting the parent of each node.
+				 */
 				thread.setPathGoal(thread.getTraverse().getPathGoal());
 				while (thread.getPathGoal() != null) {
 					thread.getNodeListPath().add(thread.getPathGoal());
 					thread.setPathGoal(thread.getPathGoal().getParent());
 				}
-				// Revering the collection of paths to the player location & remove enemy node
-				// from list
+				/*
+				 * Reverse the path so it becomes the path from the current node to the player node.
+				 */
 				Collections.reverse(thread.getNodeListPath());
 				thread.getNodeListPath().removeFirst(); // Remove itself from the list.
 			}
 		}
 
-		// If the path has been found then start moving the enemy towards the player
+		// If the path has been found then start moving the enemy towards the player.
 		if (thread.getTraverse().isFoundGoal()) {
 
 			Node nextPath = thread.getNodeListPath().poll();
@@ -152,10 +181,13 @@ public class SpiderController {
 		}
 	} // End hunt player.
 
+	/*
+	 * If it is not an A* spider, randomly move the spider through the maze.
+	 */
 	public static void randomWalk(Spider thread, int direction) {
 		if (thread.getHealth() <= 0)
 			return;
-		// Moving the enemy object to a new position in the maze
+		// Moving the enemy object to a new position in the maze.
 		switch (direction) {
 		// Going up in the maze
 		case 0:
@@ -163,19 +195,19 @@ public class SpiderController {
 				thread.setRowPos(thread.getRowPos() - 1);
 			}
 			break;
-		// Going down in the maze
+		// Going down in the maze.
 		case 1:
 			if (isValidMove(thread, thread.getRowPos() + 1, thread.getColPos())) {
 				thread.setRowPos(thread.getRowPos() + 1);
 			}
 			break;
-		// Going left in the maze
+		// Going left in the maze.
 		case 2:
 			if (isValidMove(thread, thread.getRowPos(), thread.getColPos() - 1)) {
 				thread.setColPos(thread.getColPos() - 1);
 			}
 			break;
-		// Going right in the maze
+		// Going right in the maze.
 		case 3:
 			if (isValidMove(thread, thread.getRowPos(), thread.getColPos() + 1)) {
 				thread.setColPos(thread.getColPos() + 1);
@@ -189,7 +221,11 @@ public class SpiderController {
 		}
 	}
 
-	public static void hide(Spider thread) { // Teleport the spider to a safe place in the maze.
+	/*
+	 * Teleport the spider to a new location in the maze to provide the illusion that the spider is hiding
+	 * on the player.
+	 */
+	public static void hide(Spider thread) { 
 		if (isValidMove(thread, thread.getRowPos() + 10, thread.getColPos() + 10)) {
 			thread.setRowPos(thread.getRowPos() + 10);
 			thread.setColPos((thread.getColPos() + 10));
@@ -207,11 +243,15 @@ public class SpiderController {
 		}
 	}
 
+	
+	/*
+	 * Move the A* spider throughout the maze.
+	 */
 	public static void makeMove(Spider thread, Node nextPath, boolean foundNextPath) {
 
 		while (nextPath != null && !foundNextPath) {
 
-			// Moving enemy up in the maze
+			// Moving spider up in the maze.
 			if (nextPath.getRow() == (thread.getRowPos() - 1)) {
 				if (isValidMove(thread, thread.getRowPos() - 1, thread.getColPos())) {
 					thread.setRowPos(thread.getRowPos() - 1);
@@ -219,7 +259,7 @@ public class SpiderController {
 					break;
 				}
 			}
-			// Moving the enemy down in the maze
+			// Moving the spider down in the maze.
 			if (nextPath.getRow() == (thread.getRowPos() + 1)) {
 				if (isValidMove(thread, thread.getRowPos() + 1, thread.getColPos())) {
 					thread.setRowPos(thread.getRowPos() + 1);
@@ -227,7 +267,7 @@ public class SpiderController {
 					break;
 				}
 			}
-			// Moving the enemy left in the maze
+			// Moving the spider left in the maze.
 			if (nextPath.getCol() == (thread.getColPos() - 1)) {
 				if (isValidMove(thread, thread.getRowPos(), thread.getColPos() - 1)) {
 					thread.setColPos(thread.getColPos() - 1);
@@ -235,7 +275,7 @@ public class SpiderController {
 					break;
 				}
 			}
-			// Moving the enemy right in the maze
+			// Moving the spider right in the maze.
 			if (nextPath.getCol() == (thread.getColPos() + 1)) {
 				if (isValidMove(thread, thread.getRowPos(), thread.getColPos() + 1)) {
 					thread.setColPos(thread.getColPos() + 1);
@@ -244,7 +284,7 @@ public class SpiderController {
 				}
 			}
 
-			// In case the spider gets stuck.
+			// In case the spider gets stuck, randomly move it.
 			if (!foundNextPath) {
 				randomWalk(thread, new Random().nextInt((3 - 0) + 1) + 0);
 			}

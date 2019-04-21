@@ -7,7 +7,9 @@ import ie.gmit.sw.ai.Node;
 import ie.gmit.sw.ai.Traversers.AStarTraversator;
 import ie.gmit.sw.ai.controllers.SpiderController;
 
-//public class Spider extends GameCharacter implements Runnable{
+/*
+ * Threaded spiders.
+ */
 public class Spider extends GameCharacter implements Runnable {
 
 	private int id;
@@ -63,12 +65,21 @@ public class Spider extends GameCharacter implements Runnable {
 
 				switch (getAlgorithm()) {
 				case 0:
+					/*
+					 * If it is a normal spider, move them randomly through the maze.
+					 */
 					SpiderController.randomWalk(this, new Random().nextInt((3 - 0) + 1) + 0);
 					break;
 				case 1:
+					/*
+					 * If it is an A* spider, use the algorithm to move them through the maze.
+					 */
 					SpiderController.huntPlayer(this);
 					break;
 				default:
+					/*
+					 * Default to the regular spiders movement's.
+					 */
 					SpiderController.randomWalk(this, new Random().nextInt((3 - 0) + 1) + 0);
 					break;
 				}

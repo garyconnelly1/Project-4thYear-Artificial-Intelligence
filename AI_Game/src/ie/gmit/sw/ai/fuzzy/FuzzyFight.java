@@ -7,6 +7,10 @@ import net.sourceforge.jFuzzyLogic.FunctionBlock;
 import net.sourceforge.jFuzzyLogic.rule.Variable;
 
 public class FuzzyFight {
+	
+	/*
+	 * Class allows the game to integrate with the fuzzy logic.
+	 */
 
 	public FuzzyFight() {
 
@@ -21,18 +25,33 @@ public class FuzzyFight {
 			return true;
 		}
 
+		/*
+		 * Get a handle on the 'fight' function block.
+		 */
 		FunctionBlock functionBlock = fis.getFunctionBlock("fight");
-
+		
+		/*
+		 * Provide the input variables.
+		 */
 		fis.setVariable("health", player.getHealth());
 		fis.setVariable("defense", player.getDefence());
 		fis.setVariable("weapon", player.getWeaponStrength());
+		/*
+		 * Evaluate the equation.
+		 */
 		fis.evaluate();
 
+		/*
+		 * Get a handle on the result of the fuzzy logic computation.
+		 */
 		Variable damage = functionBlock.getVariable("damage");
 		System.out.println("Damage Percentage: " + (int) damage.getValue() + "%\n");
 
 		boolean enemyWon = false;
 
+		/*
+		 * Decrease the players attributes accordingly with the amount of damage they received.
+		 */
 		player.setHealth((int) (player.getHealth() - (damage.getValue()) + 10));
 		player.setDefence((int) (player.getDefence() - damage.getValue()));
 		if (player.getDefence() < 0)
@@ -42,7 +61,7 @@ public class FuzzyFight {
 		if (player.getWeaponStrength() < 0)
 			player.setWeaponStrength(0);
 
-		// Checking health below zero, if true then the game is over
+		// Checking health below zero, if true then the game is over.
 		if (player.getHealth() <= 0) {
 			player.setHealth(0);
 			player.setGameOver(true);
@@ -57,7 +76,7 @@ public class FuzzyFight {
 			System.out.println("-------------------------------");
 		}
 
-		// If the player wins the fight then update the player object variables
+		// If the player wins the fight then update the player object variables.
 		if (!enemyWon) {
 			player.setScore(player.getScore() + 25);
 			System.out.println("Player Score: " + player.getScore());

@@ -32,6 +32,9 @@ public class GameView extends JPanel implements ActionListener {
 	}
 
 	public GameView(GameSetup game, Sprite[] sprites) {
+		/*
+		 * Initialize the objects needed to paint the view.
+		 */
 		this.sprites = sprites;
 		this.maze = game.getMaze();
 		this.imageIndex = -1;
@@ -105,6 +108,9 @@ public class GameView extends JPanel implements ActionListener {
 						g2.fillRect(x1, y1, size, size);
 					}
 				} else {
+					/*
+					 * Get teh node type of the current node.
+					 */
 					ch = maze[currentRow - cellpadding + row][currentCol - cellpadding + col].getNodeType();
 				}
 

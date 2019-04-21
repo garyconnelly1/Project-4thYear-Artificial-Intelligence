@@ -11,9 +11,17 @@ import ie.gmit.sw.ai.Traversers.Traversator;
 import ie.gmit.sw.ai.fuzzy.FuzzyFight;
 
 public class PlayerController {
+	
+	/*
+	 * Controls the player sprite's behaviour.
+	 */
 
-	public static int exitAlgorithm = 0;
+	public static int exitAlgorithm = 0; // Default the exit algorithm to A*.
 
+	
+	/*
+	 * Checks if the move the player is about to make is valid.
+	 */
 	public static boolean isValidMove(GameSetup setup, int r, int c) {
 
 		Node[][] maze;
@@ -22,7 +30,7 @@ public class PlayerController {
 			return false;
 
 		switch (maze[r][c].getNodeType()) {
-		case ' ':
+		case ' ': // If it is a road node.
 
 			maze[setup.getPlayer().getRowPos()][setup.getPlayer().getColPos()].setNodeType(' ');
 
@@ -30,8 +38,9 @@ public class PlayerController {
 			maze[r][c].setNodeType('P');
 			maze[r][c].setGoalNode(true);
 			return true;
-		case 'K':
-
+		case 'K': /* If it is a sword(Knife) node, update the players strength, output the player stats,
+					and change the sword node to a hedge node.
+		 		*/
 			if (!(setup.getPlayer().getWeaponStrength() >= 45)) {
 				setup.getPlayer().setWeaponStrength(45);
 				System.out.println("--- Player Stats ---");
@@ -42,11 +51,15 @@ public class PlayerController {
 				setup.getMaze()[r][c].setNodeType('0');
 			}
 			return true;
-		case '?':
+		case '?': /* If it is a help node, set the boolean true so that the player can use the exit algorithm.
+					Reset the help node to a hedge node.
+		 		*/
 			setup.getPlayer().setHelp(true);
 			maze[r][c].setNodeType('0');
 			return true;
-		case 'B':
+		case 'B': /* If it is a bomb node, update the players strength and output the player stats.
+					Reset the node to a hedge node.
+		 		*/
 
 			if (!(setup.getPlayer().getWeaponStrength() >= 75)) {
 				setup.getPlayer().setWeaponStrength(75);
@@ -59,7 +72,9 @@ public class PlayerController {
 
 			}
 			return true;
-		case 'H':
+		case 'H': /* If it is a hydrogen bomb node, update the players strength and output the player stats.
+					Reset the node to a hedge node.
+		 		*/
 			if (!(setup.getPlayer().getWeaponStrength() >= 100)) {
 				setup.getPlayer().setWeaponStrength(100);
 				System.out.println("--- Player Stats ---");
@@ -71,8 +86,9 @@ public class PlayerController {
 
 			}
 			return true;
-		case 'F':
-			// Health pick up, adds 50 health to players character
+		case 'F': /* If it is a food node, update the players health and output the players stats. 
+					Reset the node to a hedge node.
+		          */
 			if (setup.getPlayer().getHealth() < 100) {
 				setup.getPlayer().setHealth(setup.getPlayer().getHealth() + 50);
 				if (setup.getPlayer().getHealth() > 100)
@@ -86,8 +102,9 @@ public class PlayerController {
 
 			}
 			return true;
-		case 'M':
-			// Health pick up, adds 50 defence to players character
+		case 'M': /* If it is a metal shield node, update the players defence and output the players stats.
+		             Reset the node to a hedge node.
+		          */
 			if (setup.getPlayer().getDefence() < 100) {
 				setup.getPlayer().setDefence(setup.getPlayer().getDefence() + 25);
 				if (setup.getPlayer().getDefence() > 100)
@@ -101,13 +118,17 @@ public class PlayerController {
 
 			}
 			return true;
-		case 'Q':
+		case 'Q': /* If it is a a quickest path node, allow the player to walk into it, reset the players
+					 original node to a road node and update the current node to a player node.
+		          */
 			maze[setup.getPlayer().getRowPos()][setup.getPlayer().getColPos()].setNodeType(' ');
 			maze[setup.getPlayer().getRowPos()][setup.getPlayer().getColPos()].setGoalNode(false);
 			maze[r][c].setNodeType('P');
 			maze[r][c].setGoalNode(true);
 			return true;
-		case 'G':
+		case 'G': /* If it is the goal node, update the players previous node to e road node and update
+		 			 the players current node to a chest node.
+				  */
 			maze[setup.getPlayer().getRowPos()][setup.getPlayer().getColPos()].setNodeType(' ');
 			maze[setup.getPlayer().getRowPos()][setup.getPlayer().getColPos()].setGoalNode(false);
 			maze[r][c].setNodeType('C');
@@ -115,11 +136,13 @@ public class PlayerController {
 
 			return true;
 
-		case 'S':
+		case 'S': /* If it is a spider node, fight.
+				  */
 
 			return fight(maze, setup, r, c);
 
-		case 'A':
+		case 'A':/* If it is an A* node, fight.
+				 */
 
 			return fight(maze, setup, r, c);
 
@@ -129,12 +152,18 @@ public class PlayerController {
 		}
 	}
 
+	/*
+	 * The method that encapsulates the fuzzy logic fight implementation.
+	 */
 	public static boolean fight(Node[][] maze, GameSetup setup, int r, int c) {
-		FuzzyFight fuzzyBattle1 = new FuzzyFight();
-		boolean enemyWon1 = fuzzyBattle1.startBattle(setup.getPlayer(),
+		FuzzyFight fuzzyBattle = new FuzzyFight();
+		boolean enemyWon = fuzzyBattle.startBattle(setup.getPlayer(),
 				setup.getEnemies().get(setup.getMaze()[r][c].getEnemyID()), "resources/fuzzy/fcl/fuzzyFight.fcl");
-		if (enemyWon1 == true) {
-			// The player has lost the game!
+		if (enemyWon == true) {
+			/*
+			 * If the player has lost the game, set the players node to road, and set the current node to 
+			 * the lose(RIP) node.
+			 */
 			maze[setup.getPlayer().getRowPos()][setup.getPlayer().getColPos()].setNodeType(' ');
 			maze[setup.getPlayer().getRowPos()][setup.getPlayer().getColPos()].setEnemyID(0);
 			setup.getPlayer().setGameOver(true);
@@ -142,6 +171,9 @@ public class PlayerController {
 
 			return false;
 		} else {
+			/*
+			 * If the player won the fight, set the spiders node to a dead spider node.(Blue spider.)
+			 */
 			setup.getEnemies().get(setup.getMaze()[r][c].getEnemyID()).setHealth(0);
 			maze[r][c].setNodeType('D');
 			maze[r][c].setEnemyID(0);
@@ -152,7 +184,9 @@ public class PlayerController {
 	}
 
 	public static Traversator algorithm(GameSetup setup) {
-		// Selecting a random algorithm to be created and returned
+		/*
+		 * Selects and exit algorithm base on whatever the user chose at the beginning of the application.
+		 */
 		switch (exitAlgorithm) {
 		case 0:
 			return new AStarTraversator(setup.getModel().getGoalNode(), false);
@@ -169,6 +203,9 @@ public class PlayerController {
 		}
 	}
 
+	/*
+	 * Sets the exit algorithm.
+	 */
 	public static void setExitAlgorithm(int algorithm) {
 		exitAlgorithm = algorithm;
 	}

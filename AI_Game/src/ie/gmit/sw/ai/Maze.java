@@ -3,6 +3,11 @@ package ie.gmit.sw.ai;
 import java.util.Random;
 
 public class Maze {
+	
+	/*
+	 * Setup/build the maze.
+	 */
+	
 
 	// generation alogs we use in the labs. There are no "walls" to carve...
 	private Node[][] maze;
@@ -14,20 +19,25 @@ public class Maze {
 		init();
 		buildMaze();
 		placeGoal();
-		// unvisit();
+		
 
-		// featureNumber = 20;
+		/*
+		 * Add the different features to the maze.
+		 */
 		addFeature('F', '0', 40);
 		addFeature('M', '0', 30);
 		addFeature('K', '0', 40);
 		addFeature('?', '0', 45);
 		addFeature('B', '0', 30);
 		addFeature('H', '0', 20);
-		// addFeature('N', '0', 10);
+		
 
 		generateMaze();
 	}
 
+	/*
+	 * Create a maze full of hedges.
+	 */
 	private void init() {
 		for (int row = 0; row < maze.length; row++) {
 			for (int col = 0; col < maze[row].length; col++) {
@@ -38,6 +48,9 @@ public class Maze {
 		}
 	}
 
+	/*
+	 * Add 'number' amount of that feature instead of 'replace' feature.
+	 */
 	private void addFeature(char feature, char replace, int number) {
 
 		int counter = 0;
@@ -52,6 +65,9 @@ public class Maze {
 		}
 	}
 
+	/*
+	 * Put roads into the maze.
+	 */
 	private void buildMaze() {
 		for (int row = 0; row < maze.length; row++) {
 			for (int col = 0; col < maze[row].length - 1; col++) {
@@ -91,6 +107,9 @@ public class Maze {
 	 * 
 	 */
 
+	/*
+	 * Place the goal node in a corner of the maze.
+	 */
 	public void placeGoal() {
 
 		Random random = new Random();
@@ -137,16 +156,9 @@ public class Maze {
 		}
 	}
 
-	protected void unvisit() {
-		for (int i = 0; i < maze.length; i++) {
-			for (int j = 0; j < maze[i].length; j++) {
-				maze[i][j].setVisited(false);
-				maze[i][j].setParent(null);
-			}
-		}
-
-	}
-
+	/*
+	 * Tried using the binary tree generator from the labs but it was't really working so had to just improvise.
+	 */
 	private void generateMaze() { // Binary Maze gen.
 		for (int row = 0; row < maze.length; row++) {
 			for (int col = 0; col < maze[row].length - 1; col++) {

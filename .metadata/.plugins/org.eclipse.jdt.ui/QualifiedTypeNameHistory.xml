@@ -7,4 +7,5 @@
 <fullyQualifiedTypeName name="ie.gmit.sw.ai.Traversers.Traversator"/>
 <fullyQualifiedTypeName name="ie.gmit.sw.ai.Node"/>
 <fullyQualifiedTypeName name="ie.gmit.sw.ai.Traversers.IDAStarTraversator"/>
+<fullyQualifiedTypeName name="java.util.List"/>
 </qualifiedTypeNameHistroy>

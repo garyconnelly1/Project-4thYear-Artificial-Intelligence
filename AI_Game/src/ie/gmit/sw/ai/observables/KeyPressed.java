@@ -6,15 +6,30 @@ import java.util.ArrayList;
 
 import ie.gmit.sw.ai.observers.KeyObserver;
 
+
+/*
+* Provides an implementation of KeyListener and KeyObservable.
+* Is used to notify any observers whenever a key is pressed during the game.
+*/
 public class KeyPressed implements KeyListener, KeyObservable {
 
 	private static KeyPressed instance = null;
 
 	private ArrayList<KeyObserver> objList;
 
+	
+	/*
+	 * Initializes a list of observers.
+	 */
 	private KeyPressed() {
 		objList = new ArrayList<KeyObserver>();
 	}
+
+	
+	/*
+	 * Notifies any observers whenever a key is pressed by looping through the 
+	 * observer list.
+	 */
 
 	@Override
 	public void NotifyObservers(KeyEvent keyEvent) {
@@ -22,6 +37,10 @@ public class KeyPressed implements KeyListener, KeyObservable {
 			obs.update(keyEvent);
 		}
 	}
+	
+	/*
+	 * Adds objects to the list of observers.
+	 */
 
 	public void AddObserver(KeyObserver obs) {
 		if (obs != null)
@@ -45,6 +64,11 @@ public class KeyPressed implements KeyListener, KeyObservable {
 	@Override
 	public void keyTyped(KeyEvent e) {
 	}
+	
+	/*
+	 * Checks if an instance of this object already exists, if it
+	 * does, return it. If not create a new instance of this object and return that.
+	 */
 
 	public static KeyPressed getInstance() {
 		if (instance == null) {

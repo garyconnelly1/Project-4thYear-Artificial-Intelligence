@@ -3,6 +3,9 @@ package ie.gmit.sw.ai.sprites;
 import ie.gmit.sw.ai.Direction;
 
 public class ControlledSprite extends Sprite {
+	/*
+	 * Simple java object that contains the necessary attributes for the player sprite.
+	 */
 	private int score;
 	private int stepsToExit;
 	private int steps;
@@ -142,7 +145,7 @@ public class ControlledSprite extends Sprite {
 		case 3:
 			super.setImageIndex(2); // LEFT
 		default:
-			break; // Ignore...
+			break; // Ignore.
 		}
 	}
 

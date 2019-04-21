@@ -1,34 +1,45 @@
 FUNCTION_BLOCK fight	// Block definition (there may be more than one block per file)
 
-VAR_INPUT				// Define input variables
-	health : REAL;
-	weapon : REAL;
-	defense : REAL;
+VAR_INPUT				// Define input variables.
+	health : REAL;		// Input variable representing the players health.
+	weapon : REAL;		// Input variable representing the players weapons(strength).
+	defense : REAL;		// Input variable representing the players defence.
 END_VAR
 
 VAR_OUTPUT				// Define output variable
-	damage : REAL;
+	damage : REAL;		// How much damage is inflicted on the player.
 END_VAR
 
+// The linguistic variables were inspired by many other game. Low, Medium and High are often used
+// to describe a game characters health.
+
 FUZZIFY health
-	TERM low := (0, 1) (25, 0);
-	TERM medium := (20, 0) (45,1) (60,1) (75,0);
+	TERM low := (0, 1) (25, 0); // The players health goes up in 25s, for each piece of food they pick up.
+	TERM medium := (20, 0) (45,1) (60,1) (75,0); // Used a trapezoid for the membership of medium. This is because I wanted most of the health scores 
+	// to fall into the medium group.
 	TERM high := (70, 0) (90, 1);
 END_FUZZIFY
 
+// The linguistic variables and membership functions that describe the players strength were inspired by the weapons a player can hold
+// and the strength each of those weapons provide.
 FUZZIFY weapon
-	TERM sword := (0.0, 1) (45.0, 0);
-	TERM bomb := (40.0,1) (60.0,1) (80.0,0);
-	TERM hbomb := (75, 0) (100, 1);
+	TERM sword := (0.0, 1) (45.0, 0); // If the players strength is 45 or less, they have the strength equivalent of a sword.
+	TERM bomb := (40.0,1) (60.0,1) (80.0,0); // If the players strength is between 40 and 80, they have the strength equivalent of a bomb.
+	TERM hbomb := (75, 0) (100, 1); // If the players strength is above 75, they have the strength equivalent of a hydrogen bomb.
 END_FUZZIFY
 
+
+// The linguistic variables used to describe the players defence were just personal preference. It felt natural to describe the defence of a game player
+// as good, bad or excellent. 
 FUZZIFY defense
-	TERM poor := (0, 1) (25, 0);
-	TERM good := (20, 0) (45,1) (60,1) (75,0);
-	TERM excellent := (70, 0) (100, 1);
+	TERM poor := (0, 1) (25, 0); // The defence goes up in 25s foe each shield they pickup, therefore a defence less than 25 is poor.
+	TERM good := (20, 0) (45,1) (60,1) (75,0); // A defence between 20 and 75 can be described as good.
+	TERM excellent := (70, 0) (100, 1); // A defence between 70 and 100 can be described as excellent. 
 END_FUZZIFY
 
-DEFUZZIFY damage			// Output variable 'survivability' : {'bad', 'fine', 'great' }
+
+// The damage inflicted on the player can be described as 'bad', 'fine' or 'great'.
+DEFUZZIFY damage			// Output variable 'damage' : {'bad', 'fine', 'great' }
 	TERM bad := (0,0) (35,1) (40,0);
 	TERM fine := (30,0) (50,1) (65,1) (70,0);
 	TERM great := (60,0) (75,1) (90,1) (100,1);
@@ -41,6 +52,7 @@ RULEBLOCK No1
 	ACT : MIN;			// Use 'min' activation method
 	ACCU : MAX;			// Use 'max' accumulation method
 
+// Tried to provide a very exhaustive set of fuzzy rules that should encapsulate each fuzzy set multiple times.
 	RULE 1 : IF weapon IS sword AND health IS low AND defense IS poor THEN damage IS great;
     RULE 2 : IF weapon IS sword AND health IS medium AND defense IS poor THEN damage IS great;
     RULE 3 : IF weapon IS sword AND health IS high AND defense IS poor THEN damage IS great;
