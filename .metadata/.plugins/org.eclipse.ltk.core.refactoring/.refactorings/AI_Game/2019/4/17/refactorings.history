@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;GameRunner.java&apos; to &apos;AI_Game/src/ie.gmit.sw.ai&apos;&#x0D;&#x0A;- Original project: &apos;AI_Game&apos;&#x0D;&#x0A;- Destination element: &apos;AI_Game/src/ie.gmit.sw.ai&apos;&#x0D;&#x0A;- Original element: &apos;ie.gmit.sw.ai.gui.GameRunner.java&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move compilation unit" destination="/src&lt;ie.gmit.sw.ai" element1="/src&lt;ie.gmit.sw.ai.gui{GameRunner.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" patterns="*" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1555855281930" units="1" version="1.0"/>
+</session>

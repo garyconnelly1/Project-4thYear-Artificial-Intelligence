@@ -1,9 +1,0 @@
-package ie.gmit.sw.ai;
-
-public class SpiderController {
-	
-	private static boolean isValidMove(int row, int col) {
-		return false;
-	}
-
-}
